@@ -5,11 +5,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 
-class UserList_Model extends Authenticatable
+class Users_Model extends Authenticatable
 {
     use HasFactory;
     
-    protected $table = 'user_list';
+    protected $table = 'users';
 
     protected $fillable = [
         'username',

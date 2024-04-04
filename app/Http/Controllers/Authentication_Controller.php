@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserList_Model;
+use App\Models\Users_Model;
 use App\Models\Playlist_Model;
 use App\Models\Songs_Model;
 use Illuminate\Support\Facades\Hash;
@@ -21,8 +21,8 @@ class Authentication_Controller extends Controller
 
     public function register(Request $request){
         $validatedData = $request->validate([
-            'username' => 'required|unique:user_list,username',
-            'email' => 'required|email|unique:user_list,email',
+            'username' => 'required|unique:users,username',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
     
@@ -30,7 +30,7 @@ class Authentication_Controller extends Controller
     
         $isArtist = $request->has('isArtist') ? true : false;
     
-        $newUser = UserList_Model::create([
+        $newUser = Users_Model::create([
             'username' => $validatedData['username'],
             'email' => $validatedData['email'],
             'password' => $hashedPassword,
@@ -41,11 +41,6 @@ class Authentication_Controller extends Controller
     }
 
     public function login(Request $request){
-        $loginValue = $request->input('username');
-    
-        $field = filter_var($loginValue, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-    
-        $request->merge([$field => $loginValue]);
     
         $credentials = $request->only('username', 'password');
     
@@ -66,17 +61,17 @@ class Authentication_Controller extends Controller
     }
     }
 
-    public function edit_selected_user(UserList_Model $user){
+    public function edit_selected_user(Users_Model $user){
         return view('UI.userEdit', ['Current_User' => $user]);
     }
 
-    public function update_selected_user(UserList_Model $user, Request $request){
+    public function update_selected_user(Users_Model $user, Request $request){
 
         $isArtist = $request->has('isArtist') ? true : false;
 
     if($request->input('username') == $user->username && $request->input('email') != $user->email){
         $validatedData = $request->validate([
-            'email' => 'required|email|unique:user_list,email',
+            'email' => 'required|email|unique:users,email',
         ]);
 
         $user->update([
@@ -86,7 +81,7 @@ class Authentication_Controller extends Controller
 
     }else if($request->input('username') != $user->username && $request->input('email') == $user->email){
         $validatedData = $request->validate([
-            'username' => 'required|unique:user_list,username',
+            'username' => 'required|unique:userst,username',
         ]);
 
         $user->update([
@@ -96,8 +91,8 @@ class Authentication_Controller extends Controller
     }else if($request->input('username') != $user->username && $request->input('email') != $user->email){
 
         $validatedData = $request->validate([
-            'username' => 'required|unique:user_list,username',
-            'email' => 'required|email|unique:user_list,email',
+            'username' => 'required|unique:users,username',
+            'email' => 'required|email|unique:users,email',
         ]);
 
         $user->update([
