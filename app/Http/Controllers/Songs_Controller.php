@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Songs_Model;
 use App\Models\Playlist_Model;
-use App\Models\UserList_Model;
+use App\Models\Users_Model;
 use Illuminate\Support\Facades\Auth;
 
 class Songs_Controller extends Controller
@@ -35,37 +35,35 @@ class Songs_Controller extends Controller
         return view('UI.edit', ['Current_Song' => $song]);
     }
 
-    public function store_songs(Request $request){
-        
+    public function store_songs(Request $request) {
         $validatedData = $request->validate([
             'Song_Name' => 'required|max:25',
             'Artists_Name' => 'required',
             'Songs_Genre' => 'required',
             'Song' => 'required'
         ]);
-
-        if($latestSong = Songs_Model::latest()->first() == null){
-            $Songs_Directory = 1;
-        }else{
-        $latestSong = Songs_Model::latest()->first();
-        $Songs_Directory = $latestSong->id + 1;
+    
+        if ($request->hasFile('Song')) {
+            $songFile = $request->file('Song');
+            $Songs_Directory = $songFile->getClientOriginalName(); // Get the original name or you can generate your own unique name
+            $songFile->storeAs('Songs', $Songs_Directory); // Store the file in the 'Songs' directory
+        } else {
+            // Handle the case when no file is uploaded
+            return redirect()->back()->withErrors(['Song' => 'Please upload a song file.'])->withInput();
         }
-        //$Songs_Directory = $request->file('Song')->getClientOriginalName();
-        $Song_File = file_get_contents($request->file('Song')); 
-
+    
         $song = new Songs_Model();
         $song->Song_Name = $validatedData['Song_Name'];
         $song->Artists_Name = $validatedData['Artists_Name'];
         $song->Songs_Genre = $validatedData['Songs_Genre'];
-        $song->Files_Name = $Songs_Directory . ".mp3";
+        $song->Files_Name = $Songs_Directory; // Save the file name
         $song->Owners_ID = Auth::id();
-
+    
         $song->save();
-
-        Storage::disk('public')->put('Songs/'.$Songs_Directory . ".mp3", $Song_File);
-
+    
         return redirect(route('songs.index'));
     }
+    
 
     public function update_selected_song(Request $request, Songs_Model $song){
         

@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Songs_Model;
 use App\Models\Playlist_Model;
-use App\Models\UserList_Model;
+use App\Models\Users_Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Playlists_Controller extends Controller
 {
@@ -15,7 +16,7 @@ class Playlists_Controller extends Controller
             $songs = Songs_Model::all();
             $userId = Auth::id();
 
-            $userData = UserList_Model::find($userId);
+            $userData = Users_Model::find($userId);
             
             $songIds = $userData->Liked_Songs ?? [];
             return view('UI.playlist_creation', ['songs' => $songs, 'array' => $songIds]);
@@ -71,7 +72,7 @@ class Playlists_Controller extends Controller
             $array = array_map('intval', $array);
 
             $userId = Auth::id();
-            $userData = UserList_Model::find($userId);
+            $userData = Users_Model::find($userId);
             
             $songIds = $userData->Liked_Songs ?? [];
         
@@ -127,7 +128,7 @@ class Playlists_Controller extends Controller
             $songs = Songs_Model::all();
             $userId = Auth::id();
 
-            $userData = UserList_Model::find($userId);
+            $userData = Users_Model::find($userId);
             
             $songIds = $userData->Liked_Songs ?? [];
     

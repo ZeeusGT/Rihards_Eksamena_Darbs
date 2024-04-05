@@ -26,7 +26,7 @@ return new class extends Migration
             [
                 'username' => 'Rihards', 'email' => 'ZeeusGT@gmail.com',
                 'password' => '$2y$12$ca/ulq5fSj6tyKyCKjjNtuPgGRCC3fqR4Y1tm1bgjM7o2q7AasQkS', 'isArtist' => True,
-                'isAdmin' => True, 'Liked_Songs' => json_encode([]),
+                'isAdmin' => True, 'Liked_Songs' => json_encode([1, 2, 3]),
             ]);
     }
 

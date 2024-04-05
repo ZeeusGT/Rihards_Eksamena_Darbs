@@ -344,7 +344,7 @@ svg {
                 <input type='file' onchange="UploadSong()" id="file" name="Song" accept="audio/*"/>
                 <label id="filesLabel" onmouseenter="changeIcon()" onmouseleave="changeBack()" for="file">Upload File</label>
                 @error('Song')
-                    <div class="alert alert-danger">Song Required</div>
+                    <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
         </div>

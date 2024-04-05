@@ -457,13 +457,15 @@
     </div>
 @endif
 
-@if ($message = Session::get('error'))
-<div class="Error">
-            <ul>
-                <li>{{ $message }}</li>
-            </ul>
-        </div>
- @endif
+@if($errors->any())
+    @foreach ($errors->all() as $error)
+    <div class="Error">
+        <ul>
+            <li>{{ $error }}</li>
+        </ul>
+    </div>
+    @endforeach
+@endif
 
 
 <form id="Login_Form" method='POST' action="{{ route('songs.loginUser') }}">
