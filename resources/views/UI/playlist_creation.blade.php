@@ -71,7 +71,7 @@ body{
 }
 
 .TableEven {
-  background-color: #6699CC;
+  background-color: #06ac8c;
 }
 
 .TableEven .bottom{
@@ -83,7 +83,7 @@ body{
 }
 
 .TableOdd {
-  background-color: #6CB4EE;
+  background-color: #048970;
 }
 
 .TableEven2 {
@@ -110,7 +110,7 @@ body{
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #002D62;
+  background-color: #035646;
   color: white;
 
 }
