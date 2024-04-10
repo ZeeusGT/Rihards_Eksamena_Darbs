@@ -231,6 +231,7 @@ body{
     position: absolute;
     display: none;
     opacity: 0;
+    z-index: -1;
     top: 50%;
     left: 35%;
     width: 30%;
@@ -253,16 +254,17 @@ body{
     display: none;
     opacity: 0;
     top: 50%;
-    left: 35%;
-    width: 30%;
-    height: 400px;
+    left: 32%;
+    width: 40%;
+    height: 500px;
     border-radius: 3.3%;
-    background: linear-gradient(180deg, #5F9EA0, #008080);
+    border: solid green 4px;
+    background: linear-gradient(180deg, #0B9069, #17B282);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    transition: transform 1s ease;
     z-index: -1;
 }
 
@@ -286,16 +288,17 @@ body{
     }
     to {
         opacity: 0;
-        transform: translateY(200);
+        transform: translateY(100%);
+        z-index: 0;
     }
 }
 
 .slideIn {
-    animation: slideIn 0.3s ease forwards;
+    animation: slideIn 0.5s ease forwards;
 }
 
 .slideOut {
-    animation: slideOut 0.3s ease forwards;
+    animation: slideOut 0.5s ease forwards;
 }
 
 .SideBar{
@@ -800,12 +803,12 @@ label input:checked + span i {
 
     @keyframes animateC{
         0%{
-            color: White;
+            color: #b92e34;
             border: 1px solid black;
         }
         100%{
-            color: White;
-            text-shadow: 0 0 10px #960018, 0 0 20px #960018, 0 0 30px #960018;
+            color: #b92e34;
+            text-shadow: 0 0 10px #960018, 0 0 20px #960018, 0 0 60px #960018;
         }
     }
 
@@ -887,6 +890,18 @@ label input:checked + span i {
 .RemoveStyle i{
     font-size: 45px;
     cursor: pointer;
+}
+
+.Error_Pos{
+    width: inherit;
+    padding: 5px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: center;
+    -ms-flex-pack: justify;
 }
 
 </style>
@@ -1031,6 +1046,9 @@ label input:checked + span i {
 
     <div id="Error" class="Form_bg2">
             <div class="Error_Pos">
+                <p id="ErrorTitle" class="Title">Error Message:</p>
+            </div>
+            <div>
                 <p id="ErrorMessage" class="Title">Something Went Wrong</p>
             </div>
         </div>
@@ -1177,7 +1195,8 @@ function ShowForm() {
         const formBg = document.getElementById('formPos');
 
         formBg.classList.remove('slideOut');
-        formBg.classList.add('slideIn');  
+        formBg.classList.add('slideIn');
+        formBg.style.zIndex = "1";  
     }
 }
 
@@ -1186,6 +1205,7 @@ function HideForm(){
 
     formBg.classList.remove('slideIn');
     formBg.classList.add('slideOut');
+    formBg.style.zIndex = "-1";
 }
 
 function Error(message){
@@ -1248,6 +1268,7 @@ function SubmitValidation(){
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
         body: JSON.stringify({
             liked_songs: ListOfLikedSongs
@@ -1263,7 +1284,7 @@ function SubmitValidation(){
     .catch(error => {
         console.error('Error:', error);
     });
-    }
+}
 }
 </script>
 </body>

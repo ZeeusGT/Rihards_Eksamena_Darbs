@@ -394,7 +394,7 @@ function VolumeSliderAppear() {
 }
 
     function SubmitForm(){
-        console.log("Shii")
+        console.log("Form Submitted")
     }
 
     function removeSpan(id) {

@@ -46,6 +46,21 @@
     transition: 0.5s;
 }
 
+.inputBox input.focused ~ span {
+    color: #00dfc4;
+    transform: translateX(10px) translateY(-7px);
+    font-size: 0.65em;
+    padding: 0 10px;
+    background: #1d2b3a;
+    border-left: 1px solid #00dfc4;
+    border-right: 1px solid #00dfc4;
+    letter-spacing: 0.2em;
+}
+
+.inputBox input.focused{
+    border: 2px solid #00dfc4;
+}
+
 .inputBox input:focus ~ span {
     color: #00dfc4;
     transform: translateX(10px) translateY(-7px);
@@ -58,9 +73,8 @@
 }
 
 .inputBox input:focus{
-    border: 1px solid #00dfc4;
+    border: 2px solid #00dfc4;
 }
-
     .button-link {
         padding: 5px 10px;
         background-color: gray;
@@ -472,11 +486,11 @@
     @csrf
     @method('POST')
     <div class="inputBox">
-        <input type='text' name="username"></input>
+        <input type='text' id="input_username" onchange="freezeAnimation('input_username')" name="username"></input>
         <span>Username</span>
     </div>
     <div class="inputBox">
-        <input type='password' name="password"></input>
+        <input type='password' id="input_password" onchange="freezeAnimation('input_password')" name="password"></input>
         <span>Password</span>
     </div>
     <div>
@@ -529,6 +543,16 @@ function submitForm() {
 
 function submitForm2() {
     document.getElementById("EmailSubmit").submit();
+}
+
+function freezeAnimation(id) {
+    const inputElement = document.getElementById(id);
+
+        if (inputElement.value !== "") {
+            inputElement.classList.add("focused");
+        } else {
+            inputElement.classList.remove("focused");
+        }
 }
 
 </script>

@@ -59,6 +59,17 @@ class Playlists_Controller extends Controller
             return view('UI.playlist_listening', ['songs' => $songs, 'array' => $songIds, 'playlist' => $play_list]);
         }
 
+        public function listen_to_liked_songs(Playlist_Model $playlist){
+            $user = Auth::user();
+        
+            $likedSongs = $user->Liked_Songs;
+        
+            $songs = Songs_Model::whereIn('id', $likedSongs)->get();
+        
+            return view('UI.playlist_liked_songs', ['songs' => $songs, 'array' => $likedSongs]);
+        }
+        
+
         public function edit_selected_playlist(Playlist_Model $playlist){
             $songs = Songs_Model::all();
 
@@ -75,8 +86,6 @@ class Playlists_Controller extends Controller
             $userData = Users_Model::find($userId);
             
             $songIds = $userData->Liked_Songs ?? [];
-        
-            //$songIds = $array;
 
             return view('UI.playlist_edit', ['songs' => $songs, 'playlist' => $playlist, 'array' => $songIds, 'current_playlists_data' => $array]);
         }
@@ -123,18 +132,11 @@ class Playlists_Controller extends Controller
             return redirect(route('songs.index'));
         }
 
-        public function listen_to_liked_songs(){
-
-            $songs = Songs_Model::all();
-            $userId = Auth::id();
-
-            $userData = Users_Model::find($userId);
+        public function delete_playlist_by_id($id){
+            $playlist = Playlist_Model::find($id);
+            $playlist->delete();
             
-            $songIds = $userData->Liked_Songs ?? [];
-    
-            return view('UI.playlist_listening', ['songs' => $songs, 'array' => $songIds]);
-    
+            return redirect(route('songs.index'));
         }
         
-
 }

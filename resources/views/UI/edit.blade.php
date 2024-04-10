@@ -7,7 +7,7 @@
     <script type="text/javascript" src="{{ asset('js/Songs_Editing_Logic.js') }}"></script> <!-- Can't locate the js file -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body onload="Edit_Styles_On_Load()">
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
@@ -220,16 +220,11 @@
 }
 
 .submit_button{
-        position: relative;
-        margin-top: 80px;
-        padding: 5px;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        
+    position: relative;
+    margin-top: 80px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .button-37 {
@@ -254,6 +249,33 @@
 }
 
 .button-37:hover {
+  box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+  transform: translateY(-2px);
+}
+
+.button-37-delete {
+  background-color: #8D272B;
+  border: 2px solid #392A48;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+  outline: 0;
+  padding: 10px 25px;
+  margin-right: 80px;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 150ms, box-shadow 150ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-37-delete:hover {
   box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
   transform: translateY(-2px);
 }
@@ -312,24 +334,40 @@
     <form method='POST' action="{{ route('songs.update', ['song' => $Current_Song->id]) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-        <div>
-            <input type='text' name="Song_Name" placeholder="Songs Name" value="{{$Current_Song->Song_Name}}"></input>
+    <div class="inputfield_container">
+        <div class="inputBox">
+                <input type='text' onchange="removeSpan('Song_Name')" id="Song_Name" value = "{{$Current_Song->Song_Name}}" name="Song_Name" autocomplete="off"/>
+                <span id="Songs_Name_Span">Songs Name</span>
+                @error('Song_Name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="inputBox">
+                <input type='text' onchange="removeSpan('Artists_Name')" id="Artists_Name" value = "{{$Current_Song->Artists_Name}}" name="Artists_Name"/>
+                <span id="Artists_Name_Span" >Artists Name</span>
+                @error('Artists_Name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="inputBox">
+                <input type='text' onchange="removeSpan('Songs_Genre')" id="Songs_Genre" value = "{{$Current_Song->Songs_Genre}}" name="Songs_Genre"/>
+                <span id="Songs_Genre_Span">Songs Genre</span>
+                @error('Songs_Genre')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        <div class="submit_button">
+                <input class="button-37" type='submit' value="Submit"/>
+                </form>
+                <form method='POST' action="{{ route('songs.delete', ['id' => $Current_Song->id]) }}" enctype="multipart/form-data">
+                @csrf
+                @method('DELETE')
+                <input class="button-37-delete" type='submit' value="Delete"/>
+                </form>
         </div>
-        <div>
-            <input type='text' name="Artists_Name" placeholder="Artists Name" value="{{$Current_Song->Artists_Name}}"></input>
-        </div>
-        <div>
-            <input type='text' name="Songs_Genre" placeholder="Songs Genre" value="{{$Current_Song->Songs_Genre}}"></input>
-        </div>
-        <div>
-            <p>Current Song: {{$Current_Song->Files_Name}}</p>
-            <input id="input" type='file' name="NewSong" accept="audio/*"></input>
-            <input style="display: none;" type='text' name="Song" id="Songs_Real_Path" value="{{$Current_Song->Files_Name}}"></input>
-        </div>
-        <div>
-            <input type='submit' value="Submit"></input>
-        </div>
-    </form>
+    </div>
 </div>
 
 <div class="SideBar">
@@ -354,6 +392,125 @@
             document.getElementById('Songs_Real_Path').value = e.target.files[0].name;
         }
     });
+
+    let alreadyUploaded = false;
+
+    function VolumeSliderAppear() {
+        const volumeSliderContainer = document.querySelector('.VolumeSliderContainer');
+        const visible = volumeSliderContainer.style.opacity;
+
+        const target = document.querySelector('.SideBar');
+        const sliderswidth = window.getComputedStyle(target).width;
+
+        if (visible == 0) {
+            volumeSliderContainer.style.width = `${sliderswidth}`;
+            volumeSliderContainer.style.opacity = 1;
+        } else {
+            volumeSliderContainer.style.width = '0px';
+            volumeSliderContainer.style.opacity = 0;
+        }
+    }
+
+        function likeBeforeRedirect(targetUrl) {
+                window.location.href = targetUrl;
+    }
+
+        function SubmitForm(){
+            console.log("From Submitted")
+        }
+
+        function Edit_Styles_On_Load(){
+            removeSpan('Song_Name')
+            removeSpan('Artists_Name')
+            removeSpan('Songs_Genre')
+        }
+
+        function removeSpan(id) {
+        const inputElement = document.getElementById("Song_Name");
+        const spanElement = document.getElementById("Songs_Name_Span");
+
+        const inputElement2 = document.getElementById("Artists_Name");
+        const spanElement2 = document.getElementById("Artists_Name_Span");
+
+        const inputElement3 = document.getElementById("Songs_Genre");
+        const spanElement3 = document.getElementById("Songs_Genre_Span");
+
+        if (id === "Song_Name") {
+            if (inputElement.value !== "") {
+                inputElement.classList.add("focused");
+            } else {
+                inputElement.classList.remove("focused");
+            }
+        }else if(id === "Artists_Name"){
+            if (inputElement2.value !== "") {
+                inputElement2.classList.add("focused");
+            } else {
+                inputElement2.classList.remove("focused");
+            }
+        }else if(id === "Songs_Genre"){
+            if (inputElement3.value !== "") {
+                inputElement3.classList.add("focused");
+            } else {
+                inputElement3.classList.remove("focused");
+            }
+        }
+    }
+
+    function UploadSong() {
+        let currentFile = document.getElementById("file").value;
+
+        if (currentFile !== "") {
+            if (alreadyUploaded == false) {
+                let filesLabel = document.getElementById("filesLabel");
+
+                filesLabel.style.padding = "20% 45% 20% 45%";
+                filesLabel.style.color = "green";
+                filesLabel.style.borderColor = "green";
+                filesLabel.title = currentFile;
+                filesLabel.classList.toggle("addedHover");
+                filesLabel.innerHTML = `<i style="font-size: 30px" class="fa-solid fa-circle-check"></i>`;
+
+                alreadyUploaded = true;
+            } else {
+                let filesLabel = document.getElementById("filesLabel");
+
+                filesLabel.style.padding = "";
+                filesLabel.style.color = "";
+                filesLabel.style.borderColor = "";
+                filesLabel.title = "";
+                filesLabel.classList.remove("addedHover");
+                filesLabel.innerHTML = `Upload File`;
+
+                document.getElementById("file").value = "";
+                alreadyUploaded = false;
+            }
+        }
+    }
+
+
+    function changeIcon() {
+        let filesLabel = document.getElementById("filesLabel");
+
+        if (alreadyUploaded == true) {
+            filesLabel.innerHTML = `<i style="font-size: 30px" class="fa-solid fa-circle-minus"></i>`;
+        }
+    }
+
+    function changeBack() {
+        let filesLabel = document.getElementById("filesLabel");
+
+        if (alreadyUploaded == true) {
+            filesLabel.innerHTML = `<i style="font-size: 30px" class="fa-solid fa-circle-check"></i>`;
+        }
+    }
+
+    document.getElementById("file").addEventListener("click", function (event) {
+        if(alreadyUploaded == true){
+        event.preventDefault();
+        UploadSong()
+        }
+    });
+
 </script>
 </body>
 </html>

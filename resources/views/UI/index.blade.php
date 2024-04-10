@@ -1200,7 +1200,7 @@ svg {
       </div>     
       </div>
   <div class="Container_Values" id="Liked_Songs_Pos">
-      <div class="Liked_Playlist" onclick="PlayLikedSongs('{{ route('songs.playlist_liked_songs') }}')">
+    <div class="Liked_Playlist" onclick="likeBeforeRedirect('{{ route('songs.playlist_liked_songs') }}')">
       <p class="Title">Songs You've Liked</p>
       <p class="ArtistText">Playlist Full Of Your Favorites</p>
       </div>

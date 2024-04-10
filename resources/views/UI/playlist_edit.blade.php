@@ -704,7 +704,8 @@ label input:checked + span i {
     <p style="display: none" id="HiddenSongPathArray"> </p>
 
     <div class="ButtonContainer">
-        <a class="SideBarButtons" style="--clr: #2774AE" onclick="SubmitForm()"><span>Save</span></a>
+        <a class="SideBarButtons" style="--clr: #B92E34; margin-right: 20px;" onclick="SubmitDeleteForm()"><span>Delete</span></a>
+        <a class="SideBarButtons" style="--clr: #50c878" onclick="SubmitForm()"><span>Save</span></a>
     </div>
 
     <div class="Titles_Container">
@@ -817,6 +818,12 @@ label input:checked + span i {
         <div>
             <input type='submit' value="Submit"></input>
         </div>
+    </form>
+</div>
+    <form method="POST" id="Form_Delete_Submit" action="{{ route('songs.playlist_delete', ['id' => $playlist->id]) }}" enctype="multipart/form-data">
+    @csrf
+    @method('DELETE')
+    <!-- Other form inputs/buttons -->
     </form>
 
 <div class="SideBar">
@@ -1101,6 +1108,11 @@ function SubmitForm(){
     document.getElementById("Form_Submit").submit()
     //likeBeforeRedirect("{{ route('songs.playlist_update', ['playlist' => $playlist->id]) }}");
 }
+
+function SubmitDeleteForm() {
+    document.getElementById("Form_Delete_Submit").submit();
+}
+
 </script>
 
 </body>

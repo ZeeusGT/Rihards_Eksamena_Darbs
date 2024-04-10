@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Mail;
 use App\Mail\SignUp;
-use App\Models\UserList_Model;
+use App\Models\Users_Model;
 use Illuminate\Support\Facades\Hash;
 
 class Mail_Controller extends Controller
 {
     function sendMail(Request $request) {
-        $user = UserList_Model::where('email', $request->input('email'))->first();
+        $user = Users_Model::where('email', $request->input('email'))->first();
     
         if ($user) {
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body onload="checkInputFields()">
 <style>
 /* https://www.youtube.com/watch?v=828Qsr7-I0g&t=4s */
 /* https://www.youtube.com/watch?v=BMphVl9suxA */
@@ -46,19 +46,34 @@
     transition: 0.5s;
 }
 
-.inputBox input:focus ~ span {
-    color: #00dfc4;
+.inputBox input.focused ~ span {
+    color: #48A860;
     transform: translateX(10px) translateY(-7px);
     font-size: 0.65em;
     padding: 0 10px;
     background: #1d2b3a;
-    border-left: 1px solid #00dfc4;
-    border-right: 1px solid #00dfc4;
+    border-left: 1px solid #48A860;
+    border-right: 1px solid #48A860;
+    letter-spacing: 0.2em;
+}
+
+.inputBox input.focused{
+    border: 2px solid #48A860;
+}
+
+.inputBox input:focus ~ span {
+    color: #48A860;
+    transform: translateX(10px) translateY(-7px);
+    font-size: 0.65em;
+    padding: 0 10px;
+    background: #1d2b3a;
+    border-left: 1px solid #48A860;
+    border-right: 1px solid #48A860;
     letter-spacing: 0.2em;
 }
 
 .inputBox input:focus{
-    border: 1px solid #00dfc4;
+    border: 2px solid #48A860;
 }
 
     .button-link {
@@ -512,33 +527,39 @@ label:after{
         <span style="--i:28;"></span>
     </div>
 <div class="block glow">
-<p id="UpdateTitle">Password Reset</p>
+<p id="UpdateTitle">Update User Data</p>
 
 @if(session('success'))
     <div class="Success">
         {{ session('success') }}
     </div>
 @endif
-    <div class="Error">
-            <p id="Errors"> </p>
+@if($errors->any())
+    <div>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="Error">{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
+@endif
 <form id="UpdateForm" method='POST' action="{{ route('songs.user_update', ['user' => $Current_User->id]) }}">
     @csrf
     @method('PUT')
     <div class="inputBox">
-        <input type='text' name="username" value="{{$Current_User->username}}"></input>
+        <input type='text' name="username" id= "input_username" onchange="freezeAnimation('input_username')" value="{{$Current_User->username}}"></input>
         <span>Username</span>
     </div>
     <div class="inputBox">
-    <input type='text' name="email" value="{{$Current_User->email}}"></input>
+    <input type='text' name="email" id= "input_email" onchange="freezeAnimation('input_email')" value="{{$Current_User->email}}"></input>
         <span>Username</span>
     </div>
     <div class="inputBox">
-    <input type='password' id="Password1" name="password"></input>
+    <input type='password' id="Password1" onchange="freezeAnimation('Password1')" name="password"></input>
         <span>Password</span>
     </div>
     <div class="inputBox">
-    <input type='password' id="Password2" name="password_confirmation">
+    <input type='password' id="Password2"  onchange="freezeAnimation('Password2')" name="password_confirmation">
         <span>Re-Enter Password</span>
     </div>
     <main>
@@ -560,6 +581,21 @@ if ("{{$Current_User->isArtist }}" == 1) {
 
 function submitForm(){
         document.getElementById("UpdateForm").submit();
+}
+
+function freezeAnimation(id) {
+    const inputElement = document.getElementById(id);
+
+        if (inputElement.value !== "") {
+            inputElement.classList.add("focused");
+        } else {
+            inputElement.classList.remove("focused");
+        }
+}
+
+function checkInputFields(){
+    freezeAnimation('input_username')
+    freezeAnimation('input_email')
 }
 
 </script>

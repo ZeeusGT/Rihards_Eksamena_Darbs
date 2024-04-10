@@ -35,6 +35,13 @@ class Songs_Controller extends Controller
         return view('UI.edit', ['Current_Song' => $song]);
     }
 
+    public function delete_song_by_id($id){
+        $song = Songs_Model::find($id);
+        $song->delete();
+        
+        return redirect(route('songs.index'));
+    }
+
     public function store_songs(Request $request) {
         $validatedData = $request->validate([
             'Song_Name' => 'required|max:25',
@@ -45,10 +52,9 @@ class Songs_Controller extends Controller
     
         if ($request->hasFile('Song')) {
             $songFile = $request->file('Song');
-            $Songs_Directory = $songFile->getClientOriginalName(); // Get the original name or you can generate your own unique name
-            $songFile->storeAs('Songs', $Songs_Directory); // Store the file in the 'Songs' directory
+            $Songs_Directory = $songFile->getClientOriginalName();
+            $songFile->storeAs('Songs', $Songs_Directory);
         } else {
-            // Handle the case when no file is uploaded
             return redirect()->back()->withErrors(['Song' => 'Please upload a song file.'])->withInput();
         }
     
@@ -56,7 +62,7 @@ class Songs_Controller extends Controller
         $song->Song_Name = $validatedData['Song_Name'];
         $song->Artists_Name = $validatedData['Artists_Name'];
         $song->Songs_Genre = $validatedData['Songs_Genre'];
-        $song->Files_Name = $Songs_Directory; // Save the file name
+        $song->Files_Name = $Songs_Directory;
         $song->Owners_ID = Auth::id();
     
         $song->save();
@@ -73,20 +79,10 @@ class Songs_Controller extends Controller
             'Songs_Genre' => 'required',
         ]);
 
-        $Songs_Directory = $request->input('Song');
-
-        if($request->file('NewSong') == null){
-
-        }else{
-            $Song_File = file_get_contents($request->file('NewSong'));
-            Storage::disk('public')->put('Songs/'.$Songs_Directory, $Song_File);
-        }
-
         $song->update([
             'Song_Name' => $request->input('Song_Name'),
             'Artists_Name' => $request->input('Artists_Name'),
             'Songs_Genre' => $request->input('Songs_Genre'),
-            'Files_Name' => $Songs_Directory
         ]);
         
         return redirect(route('songs.index'));

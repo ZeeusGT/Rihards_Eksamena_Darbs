@@ -19,12 +19,14 @@ Route::put('songs/{song}/update', [Songs_Controller::class, 'update_selected_son
 Route::post('/songs', [Songs_Controller::class, 'store_songs'])->name('songs.store')->middleware('auth');
 Route::post('/songs/updatelikes', [Songs_Controller::class, 'store_liked_songs'])->name('songs.updatelikes')->middleware('auth');
 Route::get('/songs/leave', [Songs_Controller::class, 'logout_user'])->name('songs.user_logout')->middleware('auth');
+Route::delete('/songs/delete/{id}', [Songs_Controller::class, 'delete_song_by_id'])->name('songs.delete')->middleware('auth');
 
 Route::get('/songs/playlist_creation', [Playlists_Controller::class, 'index'])->name('songs.playlist')->middleware('auth');
 Route::post('/songs/playlist_creation', [Playlists_Controller::class, 'store_playlist'])->name('songs.playlist_store')->middleware('auth');
 Route::get('songs/playlist/{playlist}/playlist_listening', [Playlists_Controller::class, 'listen_to_selected_playlist'])->name('songs.playlist_listen')->middleware('auth');
 Route::get('songs/playlist/{playlist}/playlist_edit', [Playlists_Controller::class, 'edit_selected_playlist'])->name('songs.playlist_edit')->middleware('auth');
 Route::put('songs/playlist/{playlist}/playlist_update', [Playlists_Controller::class, 'update_selected_playlist'])->name('songs.playlist_update')->middleware('auth');
+Route::delete('songs/playlist/playlist_delete/{id}', [Playlists_Controller::class, 'delete_playlist_by_id'])->name('songs.playlist_delete')->middleware('auth');
 Route::get('songs/playlist/liked_songs', [Playlists_Controller::class, 'listen_to_liked_songs'])->name('songs.playlist_liked_songs')->middleware('auth');
 
 Route::get('/songs/login', [Authentication_Controller::class, 'index'])->name('songs.login');

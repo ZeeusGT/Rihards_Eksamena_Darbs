@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body onload="checkInputFields()">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 * {
@@ -138,7 +138,7 @@ body{
         }
     }
 
-    .inputBox {
+.inputBox {
     position: relative;
     width: 340px;
     margin-bottom: 15px;
@@ -155,8 +155,6 @@ body{
     font-size: 1em;
 }
 
-
-
 .inputBox span {
     position: absolute;
     left: 0;
@@ -166,6 +164,21 @@ body{
     color: rgba(255, 255, 255, 0.25);
     text-transform: uppercase;
     transition: 0.5s;
+}
+
+.inputBox input.focused ~ span {
+    color: #48A860;
+    transform: translateX(10px) translateY(-7px);
+    font-size: 0.65em;
+    padding: 0 10px;
+    background: #1d2b3a;
+    border-left: 1px solid #48A860;
+    border-right: 1px solid #48A860;
+    letter-spacing: 0.2em;
+}
+
+.inputBox input.focused{
+    border: 2px solid #48A860;
 }
 
 .inputBox input:focus ~ span {
@@ -180,7 +193,7 @@ body{
 }
 
 .inputBox input:focus{
-    border: 1px solid #48A860;
+    border: 2px solid #48A860;
 }
 
 label{
@@ -435,19 +448,19 @@ label:after{
     @csrf
     @method('POST')
     <div id="FixErrorPos" class="inputBox">
-        <input type='text' name="username" value="{{ old('username') }}"></input>
+        <input type='text' name="username" id="input_username" onchange="freezeAnimation('input_username')" value="{{ old('username') }}"></input>
         <span>Username</span>
     </div>
     <div class="inputBox">
-        <input type='text' name="email" value="{{ old('email') }}"></input>
+        <input type='text' name="email" id="input_email" onchange="freezeAnimation('input_email')" value="{{ old('email') }}"></input>
         <span>E-Mail</span>
     </div>
     <div class="inputBox">
-        <input type='password' name="password"></input>
+        <input type='password' id="input_password" onchange="freezeAnimation('input_password')" name="password"></input>
         <span>Password</span>
     </div>
     <div class="inputBox">
-        <input type='password' name="password_confirmation"></input>
+        <input type='password' id="input_password_confirmation" onchange="freezeAnimation('input_password_confirmation')" name="password_confirmation"></input>
         <span>Re-Enter Password</span>
     </div>
     <main>
@@ -466,6 +479,21 @@ label:after{
 
 function submitForm(){
     document.getElementById("RegisterForm").submit();
+}
+
+function freezeAnimation(id) {
+    const inputElement = document.getElementById(id);
+
+        if (inputElement.value !== "") {
+            inputElement.classList.add("focused");
+        } else {
+            inputElement.classList.remove("focused");
+        }
+}
+
+function checkInputFields(){
+    freezeAnimation('input_username')
+    freezeAnimation('input_email')
 }
 
 </script>
