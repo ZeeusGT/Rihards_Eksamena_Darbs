@@ -49,26 +49,31 @@ class Songs_Controller extends Controller
             'Songs_Genre' => 'required',
             'Song' => 'required'
         ]);
-    
-        if ($request->hasFile('Song')) {
-            $songFile = $request->file('Song');
-            $Songs_Directory = $songFile->getClientOriginalName();
-            $songFile->storeAs('Songs', $Songs_Directory);
+
+        $latestSong = Songs_Model::latest()->first();
+
+        if ($latestSong == null) {
+            $Songs_Directory = 1;
         } else {
-            return redirect()->back()->withErrors(['Song' => 'Please upload a song file.'])->withInput();
+            $Songs_Directory = $latestSong->id + 1;
         }
+    
+        $Song_File = file_get_contents($request->file('Song')); 
     
         $song = new Songs_Model();
         $song->Song_Name = $validatedData['Song_Name'];
         $song->Artists_Name = $validatedData['Artists_Name'];
         $song->Songs_Genre = $validatedData['Songs_Genre'];
-        $song->Files_Name = $Songs_Directory;
+        $song->Files_Name = $Songs_Directory . ".mp3";
         $song->Owners_ID = Auth::id();
     
         $song->save();
     
+        Storage::disk('public')->put('Songs/'.$Songs_Directory . ".mp3", $Song_File);
+    
         return redirect(route('songs.index'));
     }
+    
     
 
     public function update_selected_song(Request $request, Songs_Model $song){
