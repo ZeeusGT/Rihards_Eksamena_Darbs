@@ -963,7 +963,7 @@ label input:checked + span i {
                         <td>{{$song->Songs_Genre}}</td>
                         <td>
                         <div class="Action_Container">
-                        <audio class="AudioClass" id="Song{{$song->id}}" src="/storage/Songs/{{ $song->Files_Name }}" preload="none"></audio>
+                        <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}" preload="none"></audio>
                         <div class="PlayButton" onclick="Play({{$song->id}}, this)">
                                 <div class="bottom"></div>
                                 <div class="icon">

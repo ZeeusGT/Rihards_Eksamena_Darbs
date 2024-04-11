@@ -41,7 +41,7 @@ class Songs_Controller extends Controller
         
         return redirect(route('songs.index'));
     }
-
+    
     public function store_songs(Request $request) {
         $validatedData = $request->validate([
             'Song_Name' => 'required|max:25',
@@ -52,27 +52,30 @@ class Songs_Controller extends Controller
 
         $latestSong = Songs_Model::latest()->first();
 
-        if ($latestSong == null) {
-            $Songs_Directory = 1;
-        } else {
-            $Songs_Directory = $latestSong->id + 1;
+        if($latestSong == null){
+            $songId = 1;
+        }else{
+            $songId = $latestSong->id + 1;
         }
-    
-        $Song_File = file_get_contents($request->file('Song')); 
     
         $song = new Songs_Model();
         $song->Song_Name = $validatedData['Song_Name'];
         $song->Artists_Name = $validatedData['Artists_Name'];
         $song->Songs_Genre = $validatedData['Songs_Genre'];
-        $song->Files_Name = $Songs_Directory . ".mp3";
         $song->Owners_ID = Auth::id();
     
+        // Store the uploaded file with filename as the song ID and ".mp3" extension
+        $file = $request->file('Song');
+        $fileName = $songId . '.mp3';
+        $file->move('public/Songs_Folder', $fileName); // Replace with the actual path to your directory
+    
+        // Update the Files_Name column in the database
+        $song->Files_Name = $fileName;
         $song->save();
     
-        Storage::disk('public')->put('Songs/'.$Songs_Directory . ".mp3", $Song_File);
-    
-        return redirect(route('songs.index'));
+        return redirect()->route('songs.index');
     }
+    
     
     
 

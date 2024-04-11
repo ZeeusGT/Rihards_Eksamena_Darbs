@@ -45,7 +45,7 @@ body{
   border-radius: 10px;
   background: linear-gradient(180deg, #002244, #2c3968);
   width:inherit;
-  transition: all 2s;
+  transition: all 0.5s;
   cursor: pointer;
 }
 
@@ -753,7 +753,7 @@ label input:checked + span i {
         border-radius: 10px;
         background: linear-gradient(180deg, #2c3968, #005A9C);
         width:inherit;
-        transition: all 2s;
+        transition: all 0.5s;
         cursor: pointer;
     }
 
@@ -1050,7 +1050,7 @@ svg {
         onchange="likefunc(this.getAttribute('data-likedid'))" data-likedid="{{$song->id}}">
             <span><i class="fa-regular fa-heart"></i></span>
         </label>
-        <audio class="AudioClass" id="Song{{$song->id}}" src="/storage/Songs/{{ $song->Files_Name }}" preload="none"></audio>
+        <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}" preload="none"></audio>
         <div class="PlayButton" onclick="Play({{$song->id}}, this)">
             <div class="bottom"></div>
             <div class="icon">
@@ -1097,7 +1097,7 @@ svg {
         onchange="likefunc(this.getAttribute('data-likedid'))" data-likedid="{{$song->id}}">
             <span><i class="fa-regular fa-heart"></i></span>
         </label>
-        <audio class="AudioClass" id="Song{{$song->id}}" src="/storage/Songs/{{ $song->Files_Name }}" preload="none"></audio>
+        <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}" preload="none"></audio>
         <div class="PlayButton" onclick="Play({{$song->id}}, this)">
             <div class="bottom"></div>
             <div class="icon">

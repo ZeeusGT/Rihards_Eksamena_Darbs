@@ -731,7 +731,7 @@ label input:checked + span i {
                         <td>{{$song->Songs_Genre}}</td>
                         <td>
                         <div class="Action_Container">
-                        <audio class="AudioClass" id="Song{{$song->id}}" src="/storage/Songs/{{ $song->Files_Name }}" preload="none"></audio>
+                        <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}" preload="none"></audio>
                         <div class="PlayButton" onclick="Play({{$song->id}}, this)">
                                 <div class="bottom"></div>
                                 <div class="icon">
@@ -1000,7 +1000,7 @@ function ListOfSongs() {
         c2.innerText = array_Artist_Name[i];
         c3.innerText = array_Song_Genre[i];
         c4.innerHTML = `<div class="Action_Container">
-                            <audio preload="none"><source src="/storage/Songs/${array_File_Path[i]}" type="audio/mpeg"></audio>
+                            <audio preload="none"><source src="/public/Songs_Folder/${array_File_Path[i]}" type="audio/mpeg"></audio>
                             <div class="PlayButton" onclick="Play(${array_Song_Id[i]}, this)">
                                 <div class="bottom"></div>
                                 <div class="icon">

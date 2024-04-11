@@ -829,7 +829,7 @@ padding-left: 15px;
                         onchange="likefunc('{{ $song->id }}')">
                                 <span><i class="fa-regular fa-heart"></i></span>
                             </label>
-                        <audio class="AudioClass" id="Song{{$song->id}}" src="/storage/Songs/{{ $song->Files_Name }}"></audio>
+                        <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}"></audio>
                         <div class="PlayButton" id="PlayButtonWithId{{$song->id}}" onclick="Play({{$song->id}})">
                                 <div class="bottom"></div>
                                 <div class="icon">
