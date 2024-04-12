@@ -4,6 +4,8 @@ use App\Http\Controllers\Playlists_Controller;
 use App\Http\Controllers\Authentication_Controller;
 use App\Http\Controllers\Admin_Controller;
 use App\Http\Controllers\Mail_Controller;
+use App\Http\Controllers\AboutUs_Controller;
+
 
 // Your other routes...
 
@@ -38,6 +40,7 @@ Route::get('songs/{user}/edit_user', [Authentication_Controller::class, 'edit_se
 Route::put('songs/{user}/edit_user', [Authentication_Controller::class, 'update_selected_user'])->name('songs.user_update')->middleware('auth');
 
 Route::get('/songs/admin', [Admin_Controller::class, 'index'])->name('songs.admin')->middleware('auth', 'admin.check');
+Route::get('/songs/aboutus', [AboutUs_Controller::class, 'home_view'])->name('songs.aboutus')->middleware('auth');
 
 Route::post('/send-mail', [Mail_Controller::class, 'sendMail'])->name('mail');
 Route::post('/validate-mail', [Mail_Controller::class, 'validateCode'])->name('mail.validate');

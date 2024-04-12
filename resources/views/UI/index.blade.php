@@ -493,7 +493,7 @@ label input:checked + span i {
         border-radius: 10px;
         background: linear-gradient(180deg, #005A9C, #012169);
         width: inherit;
-        transition: all 2s;
+        transition: all 0.5s;
         cursor: pointer;
 }
 
@@ -540,7 +540,7 @@ label input:checked + span i {
     background: linear-gradient(180deg, #012169, #0093AF);
     width: 30.7%;
     flex: 0 0 auto;
-    transition: all 2s;
+    transition: all 0.5s;
     cursor: pointer;
 }
 
@@ -659,7 +659,7 @@ label input:checked + span i {
         border-radius: 10px;
         background: linear-gradient(180deg, #004687, #0093AF);
         width:inherit;
-        transition: all 2s;
+        transition: all 0.5s;
         cursor: pointer;
     }
 
@@ -1209,7 +1209,7 @@ svg {
 <div class="SideBar">
 <a  class="SideBarButtons" style="--clr: #2774AE" onclick="likeBeforeRedirect('{{ route('songs.index') }}')"><span><i class="fa-solid fa-house"></i></span></a>
 <a  class="SideBarButtons" style="--clr: #4FFFB0" onclick="likeBeforeRedirect('{{ route('songs.user_edit', ['user' => Auth::id()]) }}')"><span><i class="fa-solid fa-user"></i></span></a>
-<a  class="SideBarButtons" style="--clr: #9370DB" onclick="likeBeforeRedirect('{{ route('songs.playlist_store')}}')"><span><i class="fa-solid fa-question"></i></span></a>
+<a  class="SideBarButtons" style="--clr: #9370DB" onclick="likeBeforeRedirect('{{ route('songs.aboutus')}}')"><span><i class="fa-solid fa-question"></i></span></a>
 <a  class="SideBarButtons" style="--clr: #660000" onclick="likeBeforeRedirect('{{ route('songs.user_logout')}}')"><span><i class="fa-solid fa-right-from-bracket"></i></i></span></a>
 @if(Auth::check() && Auth::user()->isArtist)
     <a class="SideBarButtons" style="--clr: #FFD700" onclick="likeBeforeRedirect('{{ route('songs.create') }}')"><span><i class="fa-solid fa-upload"></i></span></a>
