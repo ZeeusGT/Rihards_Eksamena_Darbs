@@ -15,7 +15,7 @@ Route::get('/', function () {
 
 Route::get('/songs', [Songs_Controller::class, 'index'])->name('songs.index')->middleware('auth');
 Route::get('/songs/create', [Songs_Controller::class, 'create'])->name('songs.create')->middleware('artist');
-Route::get('/songs/view', [Songs_Controller::class, 'view'])->name('songs.view')->middleware('auth');
+Route::get('/songs/{song}/view', [Songs_Controller::class, 'view_selected_song'])->name('songs.view')->middleware('auth');
 Route::get('songs/{song}/edit', [Songs_Controller::class, 'edit_selected_song'])->name('songs.edit')->middleware('auth');
 Route::put('songs/{song}/update', [Songs_Controller::class, 'update_selected_song'])->name('songs.update')->middleware('auth');
 Route::post('/songs', [Songs_Controller::class, 'store_songs'])->name('songs.store')->middleware('auth');

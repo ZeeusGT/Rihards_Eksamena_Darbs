@@ -27,8 +27,8 @@ class Songs_Controller extends Controller
         return view('UI.create');
     }
 
-    public function view(){
-        return view('UI.view');
+    public function view_selected_song(Songs_Model $song){
+        return view('UI.view', ['Current_Song' => $song]);
     }
 
     public function edit_selected_song(Songs_Model $song){
@@ -37,6 +37,9 @@ class Songs_Controller extends Controller
 
     public function delete_song_by_id($id){
         $song = Songs_Model::find($id);
+        if (file_exists('public/Songs_Folder/' . $song->id . '.mp3')) {
+            unlink('public/Songs_Folder/' . $song->id . '.mp3');
+        }
         $song->delete();
         
         return redirect(route('songs.index'));
@@ -64,12 +67,10 @@ class Songs_Controller extends Controller
         $song->Songs_Genre = $validatedData['Songs_Genre'];
         $song->Owners_ID = Auth::id();
     
-        // Store the uploaded file with filename as the song ID and ".mp3" extension
         $file = $request->file('Song');
         $fileName = $songId . '.mp3';
-        $file->move('public/Songs_Folder', $fileName); // Replace with the actual path to your directory
+        $file->move('public/Songs_Folder', $fileName);
     
-        // Update the Files_Name column in the database
         $song->Files_Name = $fileName;
         $song->save();
     

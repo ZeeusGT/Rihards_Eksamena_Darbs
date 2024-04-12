@@ -447,6 +447,7 @@ label input:checked + span i {
 
 
     #EditIcon{
+        z-index: 1;
         position: relative;
         align-items: right;
         display: flex;
@@ -1038,7 +1039,7 @@ svg {
         <a onclick="likeBeforeRedirect('{{ route('songs.edit', ['song' => $song->id]) }}')"><i class="fas fa-edit"></i></a>
         </div>
         @endif
-        <div id="SongsPos">
+        <div id="SongsPos" onclick="likeBeforeRedirect('{{ route('songs.view', ['song' => $song->id]) }}')">
         <p class="Title">{{$song->Song_Name}}</p>
         </div>
         <div id="ArtistsPos">
@@ -1085,7 +1086,7 @@ svg {
         <a onclick="likeBeforeRedirect('{{ route('songs.edit', ['song' => $song->id]) }}')"><i class="fas fa-edit"></i></a>
         </div>
         @endif
-        <div id="SongsPos">
+        <div id="SongsPos" onclick="likeBeforeRedirect('{{ route('songs.view', ['song' => $song->id]) }}')">
         <p class="Title">{{$song->Song_Name}}</p>
         </div>
         <div id="ArtistsPos">
