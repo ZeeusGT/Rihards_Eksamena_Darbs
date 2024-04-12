@@ -26,7 +26,7 @@ return new class extends Migration
             [
                 'username' => 'Rihards', 'email' => 'ZeeusGT@gmail.com',
                 'password' => '$2y$12$ca/ulq5fSj6tyKyCKjjNtuPgGRCC3fqR4Y1tm1bgjM7o2q7AasQkS', 'isArtist' => True,
-                'isAdmin' => false, 'Liked_Songs' => json_encode(["4","10","6"]),
+                'isAdmin' => False, 'Liked_Songs' => json_encode(["4","10","6"]),
             ],
             [
                 'username' => 'Admin', 'email' => 'Rihify@gmail.com',
@@ -37,7 +37,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations
      */
     public function down(): void
     {

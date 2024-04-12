@@ -19,7 +19,8 @@
 }
 
 body{
-    background-color: #FF9F00;
+    background-color: black;
+    overflow: hidden;
 }
 
 svg {
@@ -32,6 +33,8 @@ svg {
 }
 
 .Titles_Container{
+        pointer-events: none;
+        margin-top: 75%;
         width:90%;
         margin-left: 7%;
         padding: 5px;
@@ -58,6 +61,9 @@ svg {
     }
 
     .Paragraph_Container{
+        pointer-events: none;
+        display: none;
+        opacity: 0;
         width:90%;
         margin-left: 7%;
         padding: 5px;
@@ -347,97 +353,253 @@ textarea {
     background:#CC4949;
 }
 
+.Field1{
+    background-color: black;
+    height: inherit;
+    width: inherit;
+    transition: all 0.5s;
+    z-index: 1;
+}
+.Field2{
+    background-color: red;
+    height: inherit;
+    width: inherit;
+    transition: all 0.5s;
+    z-index: 1;
+}
+
+.Field3{
+    background-color: gray;
+    height: inherit;
+    width: inherit;
+    transition: all 0.5s;
+    z-index: 1; 
+}
+
+.Field1:hover{
+  width: calc(150%);
+  z-index: 2;
+}
+
+.Field2:hover{
+  width: calc(150%);
+  z-index: 2;
+}
+
+.Field3:hover{
+  width: calc(150%);
+  z-index: 2;
+}
+
+.Field_Container{
+    position: relative;
+    width: 93%;
+    height: 100vh;
+    margin-left: 7%;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+}
+
+.fade-in {
+  animation: fadeIn 1s forwards;
+}
+
+.fade-out{
+  animation: fadeOut 0.5s forwards;
+}
+
+.slide-up{
+    animation: slideUp 1s forwards;
+}
+
+.slide-down{
+    animation: slideDown 0.5s forwards;
+}
+
+@keyframes slideUp {
+  0%{
+    margin-top: 75%;
+  }
+  100% {
+    margin-top: 20%;
+  }
+}
+
+@keyframes slideDown {
+  0%{
+    margin-top: 20%;
+  }
+  100% {
+    margin-top: 75%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.form_div{
+    background-color: white;
+    width: 700px;
+    height: 700px;
+    z-index: 4;
+}
+
+
 </style>
+<div class="Field_Container">
+    <div class="Field1" onmouseover="toggleFadeIn()" onmouseout="toggleFadeOut()">
+        <div id="Titles_Container" class="Titles_Container">
+            <p class="Page_Titles">About Us</p>
+        </div>
+        <div class="Paragraph_Container" id="Paragraph_Container">
+            <p class="Page_Paragraphs">
+                Welcome to our music listening website, where the rhythm of your life finds its perfect beat! Dive into a world of endless melodies and harmonies, curated just for you. With our intuitive platform, you can create, edit, and remove playlists with ease, sculpting your musical journey to perfection. But the fun doesn't stop there - explore the diverse playlists crafted by fellow music enthusiasts, discovering new favorites with every click. Feel like sharing your own tunes? Upload your songs for free and let your creativity echo through the digital airwaves. Whether you're into chart-topping hits, indie gems, or timeless classics, we've got you covered with a vast library spanning various genres and eras. Join us on this sonic adventure, where every note resonates with passion and possibility.
+            </p>
+        </div>
+    </div> 
+    <div class="Field2" onmouseover="toggleFadeIn2()" onmouseout="toggleFadeOut()">
+        <div id="Titles_Container2" class="Titles_Container">
+            <p class="Page_Titles">Helpful Tips</p>
+        </div>
+        <div class="Paragraph_Container" id="Paragraph_Container2">
+            <img src="/public/Img_Folder/SideBar.png">
+            <ul id="List_Positioning" class="Page_Paragraphs">
+                <li>Main Page - Redirects You To The Main Page Of Rihify</li>
+                <li>Your Account - Edit Your Account Details Here</li>
+                <li>About Us - A Brief Explenation On What This Website Is About</li>
+                <li>Logout - Exits You From Your Current Account</li>
+                <li>Upload - Share Songs With Other Users Of This Website</li>
+                <li>Volume - Volume Slider</li>
+            </ul>
+        </div>
+    </div>
+    <div class="Field3" id="Field3" onmouseover="toggleFadeIn3()" onmouseout="toggleFadeOut()">
+        <div id="Titles_Container3" class="Titles_Container">
+            <p class="Page_Titles">Contact Us</p>
+        </div>
+        <div class="Paragraph_Container" id="Paragraph_Container3">
+            <form>      
+            <input name="name"  style="pointer-events: auto;" type="text" class="feedback-input" placeholder="Your Name" />   
+            <input name="email"  style="pointer-events: auto;" type="text" class="feedback-input" placeholder="Your Email" />
+            <textarea name="text"  style="pointer-events: auto;" class="feedback-input" placeholder="Comment"></textarea>
+            <input type="submit"  style="pointer-events: auto;" value="SEND"/>
+            </form>
+        </div>
+    </div>
+</div>
 
-<svg preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
-    <defs>
-        <style>
-            @keyframes rotate {
-                0% {
-                    transform: rotate(0deg);
-                }
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
-            .out-top-custom {
-                animation: rotate 20s linear infinite;
-                transform-origin: 13px 25px;
-            }
-            .in-top-custom {
-                animation: rotate 10s linear infinite;
-                transform-origin: 13px 25px;
-            }
-            .out-bottom-custom {
-                animation: rotate 25s linear infinite;
-                transform-origin: 84px 93px;
-            }
-            .in-bottom-custom {
-                animation: rotate 15s linear infinite;
-                transform-origin: 84px 93px;
-            }
-        </style>
-    </defs>
-    <path fill="#FEBA4F" class="out-top-custom" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z"/>
-    <path fill="#FFA600" class="in-top-custom" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z"/>
-    <path fill="#F26E01" class="out-bottom-custom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z"/>
-    <path fill="#EE5921" class="in-bottom-custom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z"/>
-</svg>
-
-<div class="Titles_Container">
-    <p class="Page_Titles">About Us</p>
-</div>
-<div class="Paragraph_Container">
-    <p class="Page_Paragraphs">
-Welcome to our music listening website, where the rhythm of your life finds its perfect beat! Dive into a world of endless melodies and harmonies, curated just for you. With our intuitive platform, you can create, edit, and remove playlists with ease, sculpting your musical journey to perfection. But the fun doesn't stop there - explore the diverse playlists crafted by fellow music enthusiasts, discovering new favorites with every click. Feel like sharing your own tunes? Upload your songs for free and let your creativity echo through the digital airwaves. Whether you're into chart-topping hits, indie gems, or timeless classics, we've got you covered with a vast library spanning various genres and eras. Join us on this sonic adventure, where every note resonates with passion and possibility.
-    </p>
-</div>
-<div class="Titles_Container">
-    <p class="Page_Titles">Helpful Tips</p>
-</div>
-<div class="Paragraph_Container">
-    <img src="/public/Img_Folder/SideBar.png">
-    <ul id="List_Positioning" class="Page_Paragraphs">
-        <li>Main Page - Redirects You To The Main Page Of Rihify</li>
-        <li>Your Account - Edit Your Account Details Here</li>
-        <li>About Us - A Brief Explenation On What This Website Is About</li>
-        <li>Logout - Exits You From Your Current Account</li>
-        <li>Upload - Share Songs With Other Users Of This Website</li>
-        <li>Volume - Volume Slider</li>
-    </ul>
-</div>
-<div class="Titles_Container">
-    <p class="Page_Titles">Contact Us</p>
-</div>
-<div class="Paragraph_Container">
-<form>      
-  <input name="name" type="text" class="feedback-input" placeholder="Your Name" />   
-  <input name="email" type="text" class="feedback-input" placeholder="Your Email" />
-  <textarea name="text" class="feedback-input" placeholder="Comment"></textarea>
-  <input type="submit" value="SEND"/>
-</form>
-</div>
 <div class="SideBar">
-<a  class="SideBarButtons" style="--clr: #2774AE" onclick="likeBeforeRedirect('{{ route('songs.index') }}')"><span><i class="fa-solid fa-house"></i></span></a>
-<a  class="SideBarButtons" style="--clr: #4FFFB0" onclick="likeBeforeRedirect('{{ route('songs.user_edit', ['user' => Auth::id()]) }}')"><span><i class="fa-solid fa-user"></i></span></a>
-<a  class="SideBarButtons" style="--clr: #9370DB" onclick="likeBeforeRedirect('{{ route('songs.playlist_store')}}')"><span><i class="fa-solid fa-question"></i></span></a>
-<a  class="SideBarButtons" style="--clr: #660000" onclick="likeBeforeRedirect('{{ route('songs.user_logout')}}')"><span><i class="fa-solid fa-right-from-bracket"></i></i></span></a>
-@if(Auth::check() && Auth::user()->isArtist)
+    <a class="SideBarButtons" style="--clr: #2774AE" onclick="likeBeforeRedirect('{{ route('songs.index') }}')"><span><i class="fa-solid fa-house"></i></span></a>
+    <a class="SideBarButtons" style="--clr: #4FFFB0" onclick="likeBeforeRedirect('{{ route('songs.user_edit', ['user' => Auth::id()]) }}')"><span><i class="fa-solid fa-user"></i></span></a>
+    <a class="SideBarButtons" style="--clr: #9370DB" onclick="likeBeforeRedirect('{{ route('songs.playlist_store')}}')"><span><i class="fa-solid fa-question"></i></span></a>
+    <a class="SideBarButtons" style="--clr: #660000" onclick="likeBeforeRedirect('{{ route('songs.user_logout')}}')"><span><i class="fa-solid fa-right-from-bracket"></i></span></a>
+    @if(Auth::check() && Auth::user()->isArtist)
     <a class="SideBarButtons" style="--clr: #FFD700" onclick="likeBeforeRedirect('{{ route('songs.create') }}')"><span><i class="fa-solid fa-upload"></i></span></a>
-@endif
-@if(Auth::check() && Auth::user()->isAdmin)
-<a  class="SideBarButtons" style="--clr: #E26310" onclick="likeBeforeRedirect('{{ route('songs.admin')}}')"><span><i class="fa-solid fa-user-tie"></i></i></span></a>
-@endif
-<a  id="GetWidthValue" class="SideBarButtons" style="--clr: #39FF14" onclick="VolumeSliderAppear()"><span><i class="fa-solid fa-volume-high"></i></i></span></a>
-<div class="VolumeSliderContainer">
-    <input type="range" class="VolumeSlider2.0" oninput="changeGlobalVolume2()" id="volumeSlider" min="0" value="1" max="1" step="0.1">
+    @endif
+    @if(Auth::check() && Auth::user()->isAdmin)
+    <a class="SideBarButtons" style="--clr: #E26310" onclick="likeBeforeRedirect('{{ route('songs.admin')}}')"><span><i class="fa-solid fa-user-tie"></i></span></a>
+    @endif
+    <a id="GetWidthValue" class="SideBarButtons" style="--clr: #39FF14" onclick="VolumeSliderAppear()"><span><i class="fa-solid fa-volume-high"></i></span></a>
+    <div class="VolumeSliderContainer">
+        <input type="range" class="VolumeSlider2.0" oninput="changeGlobalVolume2()" id="volumeSlider" min="0" value="1" max="1" step="0.1">
+    </div>
 </div>
+
 
 <script>
 
-function likeBeforeRedirect(url){
+function likeBeforeRedirect(url) {
     window.location.href = url;
 }
+
+function toggleFadeIn() {
+    toggleFadeOut()
+
+    var element = document.getElementById("Paragraph_Container");
+    element.classList.remove("fade-out");
+    setTimeout(function() {
+        element.classList.add("fade-in");
+    }, 500);
+    document.getElementById("Titles_Container").classList.remove("slide-down");
+    document.getElementById("Titles_Container").classList.add("slide-up");
+    
+}
+
+function toggleFadeOut() {
+
+    if(document.getElementById("Titles_Container").classList.contains("slide-up")){
+        var element = document.getElementById("Paragraph_Container");
+        element.classList.remove("fade-in");
+        element.classList.add("fade-out");
+        document.getElementById("Titles_Container").classList.remove("slide-up");
+        document.getElementById("Titles_Container").classList.add("slide-down");
+
+    }
+    
+    if(document.getElementById("Titles_Container2").classList.contains("slide-up")){
+    var element = document.getElementById("Paragraph_Container2");
+    element.classList.remove("fade-in");
+    element.classList.add("fade-out");
+    document.getElementById("Titles_Container2").classList.remove("slide-up");
+    document.getElementById("Titles_Container2").classList.add("slide-down");
+    }
+    
+    if(document.getElementById("Titles_Container3").classList.contains("slide-up")){
+        var element = document.getElementById("Paragraph_Container3");
+        element.classList.remove("fade-in");
+        element.classList.add("fade-out");
+        document.getElementById("Titles_Container3").classList.remove("slide-up");
+        document.getElementById("Titles_Container3").classList.add("slide-down");
+        document.getElementById("Field3").onmouseout = toggleFadeOut;
+        document.getElementById("Field3").onmouseover = toggleFadeIn3;
+    }
+}
+
+function toggleFadeIn2() {
+toggleFadeOut()
+
+var element = document.getElementById("Paragraph_Container2");
+element.classList.remove("fade-out");
+setTimeout(function() {
+    element.classList.add("fade-in");
+}, 400);
+document.getElementById("Titles_Container2").classList.remove("slide-down");
+document.getElementById("Titles_Container2").classList.add("slide-up");
+
+}
+
+function toggleFadeIn3() {
+toggleFadeOut()
+
+var element = document.getElementById("Paragraph_Container3");
+element.classList.remove("fade-out");
+setTimeout(function() {
+    element.classList.add("fade-in");
+}, 400);
+document.getElementById("Titles_Container3").classList.remove("slide-down");
+document.getElementById("Titles_Container3").classList.add("slide-up");
+document.getElementById("Field3").onmouseout = null;
+document.getElementById("Field3").onmouseover = null;
+}
+
+
+
 
 </script>
 

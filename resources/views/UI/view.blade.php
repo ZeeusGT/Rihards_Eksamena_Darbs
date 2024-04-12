@@ -128,6 +128,7 @@
 
 #EditIcon {
     width: 30px;
+    cursor: pointer;
     height: 30px;
     color: white;
     z-index: 1;
