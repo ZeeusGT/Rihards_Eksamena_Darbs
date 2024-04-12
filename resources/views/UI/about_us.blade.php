@@ -354,14 +354,15 @@ textarea {
 }
 
 .Field1{
-    background-color: black;
+    background: linear-gradient(180deg, #D08E00, #94673A);
+    border-right: solid black 3px;
     height: inherit;
     width: inherit;
     transition: all 0.5s;
     z-index: 1;
 }
 .Field2{
-    background-color: red;
+    background: linear-gradient(180deg, #E7B938, #C5791A);
     height: inherit;
     width: inherit;
     transition: all 0.5s;
@@ -369,7 +370,8 @@ textarea {
 }
 
 .Field3{
-    background-color: gray;
+    background: linear-gradient(180deg, #D08E00, #94673A);
+    border-left: solid black 3px;
     height: inherit;
     width: inherit;
     transition: all 0.5s;
@@ -463,7 +465,7 @@ textarea {
 
 </style>
 <div class="Field_Container">
-    <div class="Field1" onmouseover="toggleFadeIn()" onmouseout="toggleFadeOut()">
+    <div class="Field1" id="Field1" onmouseover="toggleFadeIn()" onmouseout="toggleFadeOut()">
         <div id="Titles_Container" class="Titles_Container">
             <p class="Page_Titles">About Us</p>
         </div>
@@ -473,7 +475,7 @@ textarea {
             </p>
         </div>
     </div> 
-    <div class="Field2" onmouseover="toggleFadeIn2()" onmouseout="toggleFadeOut()">
+    <div class="Field2" id="Field2" onmouseover="toggleFadeIn2()" onmouseout="toggleFadeOut()">
         <div id="Titles_Container2" class="Titles_Container">
             <p class="Page_Titles">Helpful Tips</p>
         </div>
@@ -503,8 +505,7 @@ textarea {
         </div>
     </div>
 </div>
-
-<div class="SideBar">
+<div class="SideBar" onmouseenter="toggleFadeOut()">
     <a class="SideBarButtons" style="--clr: #2774AE" onclick="likeBeforeRedirect('{{ route('songs.index') }}')"><span><i class="fa-solid fa-house"></i></span></a>
     <a class="SideBarButtons" style="--clr: #4FFFB0" onclick="likeBeforeRedirect('{{ route('songs.user_edit', ['user' => Auth::id()]) }}')"><span><i class="fa-solid fa-user"></i></span></a>
     <a class="SideBarButtons" style="--clr: #9370DB" onclick="likeBeforeRedirect('{{ route('songs.playlist_store')}}')"><span><i class="fa-solid fa-question"></i></span></a>
@@ -538,6 +539,8 @@ function toggleFadeIn() {
     }, 500);
     document.getElementById("Titles_Container").classList.remove("slide-down");
     document.getElementById("Titles_Container").classList.add("slide-up");
+    document.getElementById("Field1").onmouseout = null;
+    document.getElementById("Field1").onmouseover = null;
     
 }
 
@@ -549,6 +552,8 @@ function toggleFadeOut() {
         element.classList.add("fade-out");
         document.getElementById("Titles_Container").classList.remove("slide-up");
         document.getElementById("Titles_Container").classList.add("slide-down");
+        document.getElementById("Field1").onmouseout = toggleFadeOut;
+        document.getElementById("Field1").onmouseover = toggleFadeIn;
 
     }
     
@@ -558,6 +563,8 @@ function toggleFadeOut() {
     element.classList.add("fade-out");
     document.getElementById("Titles_Container2").classList.remove("slide-up");
     document.getElementById("Titles_Container2").classList.add("slide-down");
+    document.getElementById("Field2").onmouseout = toggleFadeOut;
+    document.getElementById("Field2").onmouseover = toggleFadeIn2;
     }
     
     if(document.getElementById("Titles_Container3").classList.contains("slide-up")){
@@ -581,6 +588,8 @@ setTimeout(function() {
 }, 400);
 document.getElementById("Titles_Container2").classList.remove("slide-down");
 document.getElementById("Titles_Container2").classList.add("slide-up");
+document.getElementById("Field2").onmouseout = null;
+document.getElementById("Field2").onmouseover = null;
 
 }
 
@@ -599,6 +608,14 @@ document.getElementById("Field3").onmouseover = null;
 }
 
 
+//https://stackoverflow.com/questions/923299/how-can-i-detect-when-the-mouse-leaves-the-window
+document.addEventListener("mouseleave", function(event){
+
+if(event.clientY <= 0 || event.clientX <= 0 || (event.clientX >= window.innerWidth || event.clientY >= window.innerHeight))
+{
+    toggleFadeOut()
+}
+});
 
 
 </script>
