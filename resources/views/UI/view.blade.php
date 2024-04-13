@@ -169,7 +169,7 @@
         align-items: left;
         display: flex;
         justify-content: left;
-        top: 30%;
+        top: 40%;
         margin-left: 7%;
         width: 500px;
     }

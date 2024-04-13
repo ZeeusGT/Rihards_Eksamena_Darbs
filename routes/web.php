@@ -22,6 +22,7 @@ Route::post('/songs', [Songs_Controller::class, 'store_songs'])->name('songs.sto
 Route::post('/songs/updatelikes', [Songs_Controller::class, 'store_liked_songs'])->name('songs.updatelikes')->middleware('auth');
 Route::get('/songs/leave', [Songs_Controller::class, 'logout_user'])->name('songs.user_logout')->middleware('auth');
 Route::delete('/songs/delete/{id}', [Songs_Controller::class, 'delete_song_by_id'])->name('songs.delete')->middleware('auth');
+Route::get('/songs/search/{search_prompt}', [Songs_Controller::class, 'search_song_by_name'])->name('songs.search')->middleware('auth');
 
 Route::get('/songs/playlist_creation', [Playlists_Controller::class, 'index'])->name('songs.playlist')->middleware('auth');
 Route::post('/songs/playlist_creation', [Playlists_Controller::class, 'store_playlist'])->name('songs.playlist_store')->middleware('auth');

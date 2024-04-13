@@ -77,8 +77,6 @@ class Songs_Controller extends Controller
         return redirect()->route('songs.index');
     }
     
-    
-    
 
     public function update_selected_song(Request $request, Songs_Model $song){
         
@@ -109,6 +107,13 @@ class Songs_Controller extends Controller
         Auth::logout();
 
         return redirect(route('songs.login'));
+    }
+
+    public function search_song_by_name(Request $request, $search_prompt){
+
+        $results = Songs_Model::where('Song_Name', 'like', "%$search_prompt%")->get();
+    
+        return view('UI.list_of_songs', ['results' => $results, 'search_prompt' => $search_prompt]);
     }
 
 }

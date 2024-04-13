@@ -52,6 +52,7 @@ svg {
         font-size: 50px;
         margin-top: 10px;
         font-weight: bold;
+        animation: animateD 3s forwards;
     }
 
     .Page_Paragraphs{
@@ -100,7 +101,7 @@ svg {
         display: flex;
         align-items: top;
         flex-direction: column;
-        background: linear-gradient(240deg, #F26E01, #F28F1C);
+        background: linear-gradient(240deg, #1B1B1B, #2C3539);
     }
 
     .SideBarButtons{
@@ -354,15 +355,15 @@ textarea {
 }
 
 .Field1{
-    background: linear-gradient(180deg, #D08E00, #94673A);
-    border-right: solid black 3px;
+    background: linear-gradient(180deg, #0C0404, #1A2421);
+    border-right: solid white 3px;
     height: inherit;
     width: inherit;
     transition: all 0.5s;
     z-index: 1;
 }
 .Field2{
-    background: linear-gradient(180deg, #E7B938, #C5791A);
+    background: linear-gradient(180deg, #0C0404, #1A2421);
     height: inherit;
     width: inherit;
     transition: all 0.5s;
@@ -370,8 +371,8 @@ textarea {
 }
 
 .Field3{
-    background: linear-gradient(180deg, #D08E00, #94673A);
-    border-left: solid black 3px;
+    background: linear-gradient(180deg, #0C0404, #1A2421);
+    border-left: solid white 3px;
     height: inherit;
     width: inherit;
     transition: all 0.5s;
@@ -380,16 +381,25 @@ textarea {
 
 .Field1:hover{
   width: calc(150%);
+  -webkit-box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
+        -moz-box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
+        box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
   z-index: 2;
 }
 
 .Field2:hover{
   width: calc(150%);
+  -webkit-box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
+        -moz-box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
+        box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
   z-index: 2;
 }
 
 .Field3:hover{
   width: calc(150%);
+  -webkit-box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
+        -moz-box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
+        box-shadow: inset 0px 0px 125px 40px rgba(34,108,199,0.9);
   z-index: 2;
 }
 
@@ -461,6 +471,21 @@ textarea {
     height: 700px;
     z-index: 4;
 }
+
+@keyframes animateD{
+        0%{
+            text-shadow: 0 0 4px #00665c, 0 0 8px #00665c, 0 0 12px #00665c;
+        }
+        50%{
+            text-shadow: 0 0 10px #00dfc4, 0 0 20px #00dfc4, 0 0 30px #00dfc4;
+        }
+        75%{
+            text-shadow: 0 0 4px #00665c, 0 0 8px #00665c, 0 0 12px #00665c;
+        }
+        100%{
+            
+        }
+    }
 
 
 </style>
