@@ -944,7 +944,7 @@ function Play(id) {
             document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
             document.getElementById(`AudioControlsPlayButton`).classList.remove('active');
             document.getElementById(`AudioControlsPlayButton`).classList.toggle('active');
-            old_id = parseInt(oldAudio.id.match(/\d$/)[0]);
+            old_id = parseInt(oldAudio.id.match(/\d+$/)[0]);
             document.getElementById(`PlayButtonWithId${old_id}`).classList.remove('active');
             oldAudio.currentTime = 0;
             oldAudio.pause();
@@ -967,7 +967,7 @@ function Play(id) {
         audio = document.getElementById(`Song${id}`);
 
         if(oldAudio != audio){
-            old_id = parseInt(oldAudio.id.match(/\d$/)[0]);
+            old_id = parseInt(oldAudio.id.match(/\d+$/)[0]);
             document.getElementById(`PlayButtonWithId${old_id}`).classList.remove('active');
             oldAudio.currentTime = 0;
             oldAudio.pause();
