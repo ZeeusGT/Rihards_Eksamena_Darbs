@@ -69,62 +69,71 @@ class Authentication_Controller extends Controller
 
         $isArtist = $request->has('isArtist') ? true : false;
 
-    if($request->input('username') == $user->username && $request->input('email') != $user->email){
-        $validatedData = $request->validate([
-            'email' => 'required|email|unique:users,email',
-        ]);
+        if(Auth::id() == $user->id){
+
+        if($request->input('username') == $user->username && $request->input('email') != $user->email){
+            $validatedData = $request->validate([
+                'email' => 'required|email|unique:users,email',
+            ]);
+
+            $user->update([
+                'email' => $validatedData['email'],
+                'isArtist' => $isArtist
+            ]);
+
+        }else if($request->input('username') != $user->username && $request->input('email') == $user->email){
+            $validatedData = $request->validate([
+                'username' => 'required|unique:userst,username',
+            ]);
+
+            $user->update([
+                'username' => $validatedData['username'],
+                'isArtist' => $isArtist
+            ]);
+        }else if($request->input('username') != $user->username && $request->input('email') != $user->email){
+
+            $validatedData = $request->validate([
+                'username' => 'required|unique:users,username',
+                'email' => 'required|email|unique:users,email',
+            ]);
+
+            $user->update([
+                'username' => $validatedData['username'],
+                'email' => $validatedData['email'],
+                'isArtist' => $isArtist
+            ]);
+
+        }
+
+        if($request->input('password') != null){
+
+            $validatedData = $request->validate([
+                'password' => 'required|min:6|confirmed'
+            ]);
+
+            $hashedPassword = Hash::make($validatedData['password']);
+
+            $user->update([
+                'password' => $hashedPassword,
+                'isArtist' => $isArtist
+            ]);
+
+        }
 
         $user->update([
-            'email' => $validatedData['email'],
             'isArtist' => $isArtist
         ]);
 
-    }else if($request->input('username') != $user->username && $request->input('email') == $user->email){
-        $validatedData = $request->validate([
-            'username' => 'required|unique:userst,username',
-        ]);
+        return redirect(route('songs.index'));
 
-        $user->update([
-            'username' => $validatedData['username'],
-            'isArtist' => $isArtist
-        ]);
-    }else if($request->input('username') != $user->username && $request->input('email') != $user->email){
+    }else{
 
-        $validatedData = $request->validate([
-            'username' => 'required|unique:users,username',
-            'email' => 'required|email|unique:users,email',
-        ]);
-
-        $user->update([
-            'username' => $validatedData['username'],
-            'email' => $validatedData['email'],
-            'isArtist' => $isArtist
-        ]);
+        return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
 
     }
-
-    if($request->input('password') != null){
-
-        $validatedData = $request->validate([
-            'password' => 'required|min:6|confirmed'
-        ]);
-
-        $hashedPassword = Hash::make($validatedData['password']);
-
-        $user->update([
-            'password' => $hashedPassword,
-            'isArtist' => $isArtist
-        ]);
+    
 
     }
-
-    $user->update([
-        'isArtist' => $isArtist
-    ]);
-
-    return redirect(route('songs.index'));
-
-}
 
     public function passwordReset(){
 

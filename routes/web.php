@@ -31,6 +31,7 @@ Route::get('songs/playlist/{playlist}/playlist_edit', [Playlists_Controller::cla
 Route::put('songs/playlist/{playlist}/playlist_update', [Playlists_Controller::class, 'update_selected_playlist'])->name('songs.playlist_update')->middleware('auth');
 Route::delete('songs/playlist/playlist_delete/{id}', [Playlists_Controller::class, 'delete_playlist_by_id'])->name('songs.playlist_delete')->middleware('auth');
 Route::get('songs/playlist/liked_songs', [Playlists_Controller::class, 'listen_to_liked_songs'])->name('songs.playlist_liked_songs')->middleware('auth');
+Route::get('songs/playlist/search/{search_prompt}', [Playlists_Controller::class, 'search_playlist_by_name'])->name('songs.playlist_search')->middleware('auth');
 
 Route::get('/songs/login', [Authentication_Controller::class, 'index'])->name('songs.login');
 Route::get('/songs/password_reset', [Authentication_Controller::class, 'passwordReset'])->name('songs.reset');
@@ -40,7 +41,8 @@ Route::post('/songs/loginUser', [Authentication_Controller::class, 'login'])->na
 Route::get('songs/{user}/edit_user', [Authentication_Controller::class, 'edit_selected_user'])->name('songs.user_edit')->middleware('auth');
 Route::put('songs/{user}/edit_user', [Authentication_Controller::class, 'update_selected_user'])->name('songs.user_update')->middleware('auth');
 
-Route::get('/songs/admin', [Admin_Controller::class, 'index'])->name('songs.admin')->middleware('auth', 'admin.check');
+Route::get('/songs/admin', [Admin_Controller::class, 'index'])->name('songs.admin')->middleware('auth', 'admin');
+
 Route::get('/songs/aboutus', [AboutUs_Controller::class, 'home_view'])->name('songs.aboutus')->middleware('auth');
 
 Route::post('/send-mail', [Mail_Controller::class, 'sendMail'])->name('mail');

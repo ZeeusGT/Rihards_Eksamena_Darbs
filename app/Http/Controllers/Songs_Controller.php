@@ -32,17 +32,36 @@ class Songs_Controller extends Controller
     }
 
     public function edit_selected_song(Songs_Model $song){
-        return view('UI.edit', ['Current_Song' => $song]);
+
+        if(Auth::id() == $song->Owners_ID){
+
+            return view('UI.edit', ['Current_Song' => $song]);
+
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+
+        }
+
     }
 
     public function delete_song_by_id($id){
+
         $song = Songs_Model::find($id);
+
+        if(Auth::id() == $song->Owners_ID){
+
         if (file_exists('public/Songs_Folder/' . $song->id . '.mp3')) {
             unlink('public/Songs_Folder/' . $song->id . '.mp3');
         }
         $song->delete();
         
         return redirect(route('songs.index'));
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+
+        }
     }
     
     public function store_songs(Request $request) {
@@ -79,6 +98,8 @@ class Songs_Controller extends Controller
     
 
     public function update_selected_song(Request $request, Songs_Model $song){
+
+        if(Auth::id() == $song->Owners_ID){
         
         $request->validate([
             'Song_Name' => 'required',
@@ -93,6 +114,12 @@ class Songs_Controller extends Controller
         ]);
         
         return redirect(route('songs.index'));
+
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+
+        }
 
     }
 

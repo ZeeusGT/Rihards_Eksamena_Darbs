@@ -71,6 +71,9 @@ class Playlists_Controller extends Controller
         
 
         public function edit_selected_playlist(Playlist_Model $playlist){
+
+            if(Auth::id() == $playlist->Owners_ID){
+
             $songs = Songs_Model::all();
 
             $play_list = Playlist_Model::findOrFail($playlist->id);
@@ -88,9 +91,17 @@ class Playlists_Controller extends Controller
             $songIds = $userData->Liked_Songs ?? [];
 
             return view('UI.playlist_edit', ['songs' => $songs, 'playlist' => $playlist, 'array' => $songIds, 'current_playlists_data' => $array]);
+
+            }else{
+
+                return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+
+            }
         }
 
         public function update_selected_playlist(Playlist_Model $playlist, Request $request){
+
+            if(Auth::id() == $playlist->Owners_ID){
 
             $request->validate([
                 'Playlists_Name' => 'required',
@@ -105,6 +116,12 @@ class Playlists_Controller extends Controller
             ]);
 
             return redirect(route('songs.index'));
+
+            }else{
+
+                return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+    
+            }
 
         }
     
@@ -130,13 +147,31 @@ class Playlists_Controller extends Controller
             Storage::disk('public')->put('Songs/'.$Songs_Directory, $Song_File);
             
             return redirect(route('songs.index'));
+
         }
 
         public function delete_playlist_by_id($id){
+
             $playlist = Playlist_Model::find($id);
+
+            if(Auth::id() == $playlist->Owners_ID){
+
             $playlist->delete();
             
             return redirect(route('songs.index'));
+
+            }else{
+
+                return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+    
+            }
+        }
+
+        public function search_playlist_by_name(Request $request, $search_prompt){
+
+            $results = Playlist_Model::where('name', 'like', "%$search_prompt%")->get();
+        
+            return view('UI.list_of_playlists', ['results' => $results, 'search_prompt' => $search_prompt]);
         }
         
 }

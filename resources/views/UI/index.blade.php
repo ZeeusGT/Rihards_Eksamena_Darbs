@@ -1031,6 +1031,91 @@ svg {
   transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 }
 
+.Form_bg2 {
+    position: absolute;
+    display: none;
+    opacity: 0;
+    top: 50%;
+    left: 32%;
+    width: 40%;
+    height: 500px;
+    border-radius: 3.3%;
+    border: solid black 4px;
+    background: linear-gradient(180deg, #002244, #2c3968);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: transform 1s ease;
+    z-index: -1;
+}
+
+ @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(-60%);
+            z-index: 2;
+
+        }
+    }
+
+    @keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(-60%);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(100%);
+        z-index: 0;
+    }
+}
+
+.slideIn {
+    animation: slideIn 0.5s ease forwards;
+}
+
+.slideOut {
+    animation: slideOut 0.5s ease forwards;
+}
+
+.Error_Pos{
+    width: inherit;
+    padding: 5px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: center;
+    -ms-flex-pack: justify;
+}
+
+#ErrorMessage{
+        transition: 0.5s;
+        position: relative;
+        animation: animateC 3s linear forwards;
+    }
+
+    @keyframes animateC{
+        0%{
+            color: #b92e34;
+            border: 1px solid black;
+        }
+        100%{
+            color: #b92e34;
+            text-shadow: 0 0 10px #960018, 0 0 20px #960018, 0 0 60px #960018;
+        }
+    }
+
+    .Error{
+    display: none;
+    opacity: 0;
+}
 
 /*https://codepen.io/ksenia-k/pen/jXbWaJ*/
 
@@ -1069,6 +1154,36 @@ svg {
     <path fill="#1F305E" class="out-bottom-custom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z"/>
     <path fill="#002fa7" class="in-bottom-custom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z"/>
 </svg>
+
+@if(session('error'))
+
+    <div id="Error" class="Form_bg2">
+                <div class="Error_Pos">
+                    <p id="ErrorTitle" class="Title">Error Message:</p>
+                </div>
+                <div>
+                    <p id="ErrorMessage" class="Title">Something Went Wrong</p>
+                </div>
+    </div>
+
+    <script>
+        function Error(message){
+            const error = document.getElementById('Error');
+            document.getElementById("ErrorMessage").innerHTML = message;
+            error.classList.add('slideIn');
+            error.classList.remove('slideOut');
+
+            setTimeout(() => {
+                error.classList.add('slideOut');
+                error.classList.remove('slideIn');
+        }, 5000);
+            
+        }
+
+        Error('{{ session('error') }}');
+    </script>
+@endif
+
 @if($PlayAnimation == 1)
   <div class="WelcomeMessage">
     <p id="WelcomeUser">Welcome {{Auth::user()->username}}</p>
@@ -1083,7 +1198,7 @@ svg {
     <p class="Page_Titles">Explore Songs</p>
     <div class="search-box">
     <button class="btn-search"><i class="fas fa-search"></i></button>
-    <input onkeydown="handleKeyPress(event)" type="text" id="search_inp" class="input-search" placeholder="Songs Name:">
+    <input onkeydown="handleKeyPress(event, 'song')" type="text" id="search_inp" class="input-search" placeholder="Songs Name:">
   </div>
 </div>
 <div class="Container_Values">
@@ -1177,6 +1292,10 @@ svg {
 </div>
 <div class="Titles_Container">
     <p class="Page_Titles">Playlists Made By Other Users</p>
+    <div class="search-box">
+    <button class="btn-search"><i class="fas fa-search"></i></button>
+    <input onkeydown="handleKeyPress(event, 'playlist')" type="text" id="search_inp2" class="input-search" placeholder="Playlists Name:">
+  </div>
 </div>
 <div class="Container_Values">
 @foreach ($randomPlaylist as $playlist)
@@ -1472,13 +1591,22 @@ function likeBeforeRedirect(targetUrl) {
     });
 }
 
-function handleKeyPress(event) {
+function handleKeyPress(event, search_type) {
     if (event.key === 'Enter') {
+
+      if(search_type == 'song'){
         var searchInputValue = document.getElementById("search_inp").value;
         var routeUrl = "{{ route('songs.search', ['search_prompt' => ':searchInputValue']) }}";
         routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
         likeBeforeRedirect(routeUrl);
-    }
+      }else if(search_type == 'playlist'){
+
+        var searchInputValue = document.getElementById("search_inp2").value;
+        var routeUrl = "{{ route('songs.playlist_search', ['search_prompt' => ':searchInputValue']) }}";
+        routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
+        likeBeforeRedirect(routeUrl);
+      }
+}
 }
 
 
