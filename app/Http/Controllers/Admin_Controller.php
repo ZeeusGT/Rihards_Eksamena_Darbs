@@ -49,6 +49,7 @@ class Admin_Controller extends Controller
 
         if(Auth::user()->isAdmin){
 
+        Auth::loginUsingId($id);
         $userId = $id;
         $randomPlaylists = Playlist_Model::where('owners_id', '!=', $userId)->get()->shuffle()->take(5);
         $usersPlaylists = Playlist_Model::where('owners_id', '=', $userId)->get();
