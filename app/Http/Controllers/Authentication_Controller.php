@@ -92,7 +92,7 @@ class Authentication_Controller extends Controller
 
         }else if($request->input('username') != $user->username && $request->input('email') == $user->email){
             $validatedData = $request->validate([
-                'username' => 'required|unique:userst,username',
+                'username' => 'required|unique:users,username',
             ]);
 
             $user->update([
