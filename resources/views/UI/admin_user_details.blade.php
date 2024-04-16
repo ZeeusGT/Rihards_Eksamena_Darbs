@@ -169,18 +169,22 @@
                     <td>{{$user->email}}</td>
                     <td>{{ implode(', ', $user->Liked_Songs) }}</td>
                     <td>
-                        (
-                        @foreach($playlist as $playlist_data)
-                        {{$playlist_data->id}} , {{$playlist_data->name}} | 
-                        @endforeach
-                        )
+                        <ul>
+                            @foreach($playlist as $playlist_data)
+                            <li>
+                            {{$playlist_data->id}} , {{$playlist_data->name}}
+                            </li> 
+                            @endforeach
+                        <ul>
                     </td>
                     <td>
-                        (
+                        <ul>
                         @foreach($song as $song_data)
-                        {{$song_data->id}} , {{$song_data->Song_Name}} | 
+                        <li>
+                        {{$song_data->id}} , {{$song_data->Song_Name}}
+                        </li>
                         @endforeach
-                        )
+                        </ul>
                     </td>
                     <td>{{$user->isArtist}}</td>
                     <td>{{$user->isAdmin}}</td>
