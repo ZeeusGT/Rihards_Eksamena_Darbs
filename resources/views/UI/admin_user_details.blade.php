@@ -76,6 +76,8 @@
     #Table th {
     padding-top: 12px;
     padding-bottom: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
     text-align: left;
     background-color: #0a2351;
     color: red;
@@ -150,33 +152,41 @@
     </style>
 
     <div class = "Titles_Container">
-    <p class="Title">List Of Accounts (Admin Only)</p>
+    <p class="Title">User: {{$user->username}} Details</p>
     </div>
     <div class="Table_Container">
-    <table id="Table">
-            <tr>
-                <th>id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-            @foreach($users as $user)
-            <tr>
-                <td onclick="redirect('{{ route('songs.admin_user_view', ['id' => $user->id]) }}')">{{$user->id}}</td>
-                <td onclick="redirect('{{ route('songs.admin_user_view', ['id' => $user->id]) }}')">{{$user->username}}</td>
-                <td onclick="redirect('{{ route('songs.admin_user_view', ['id' => $user->id]) }}')">{{$user->email}}</td>
-                <td>
-                    <button onclick="redirect('{{ route('songs.admin_user_login', ['id' => $user->id]) }}')">Enter Account</button>
-                    <form id="deleteForm{{$user->id}}" action="{{ route('songs.admin_user_delete', ['id' => $user->id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" onclick="deleteUser({{$user->id}}, '{{$user->username}}')">Delete Account</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-    </table>
-</div>
+        <table id="Table">
+                <tr>
+                    <th>username</th>
+                    <th>email</th>
+                    <th>Liked_Songs (id)</th>
+                    <th>Owner_Of_Playlists (id, name)</th>
+                    <th>Owner_Of_Songs (ids, name)</th>
+                    <th>IsArtist</th>
+                    <th>IsAdmin</th>
+                </tr>
+                    <td>{{$user->username}}</td>
+                    <td>{{$user->email}}</td>
+                    <td>{{ implode(', ', $user->Liked_Songs) }}</td>
+                    <td>
+                        (
+                        @foreach($playlist as $playlist_data)
+                        {{$playlist_data->id}} , {{$playlist_data->name}} | 
+                        @endforeach
+                        )
+                    </td>
+                    <td>
+                        (
+                        @foreach($song as $song_data)
+                        {{$song_data->id}} , {{$song_data->Song_Name}} | 
+                        @endforeach
+                        )
+                    </td>
+                    <td>{{$user->isArtist}}</td>
+                    <td>{{$user->isAdmin}}</td>
+                </tr>
+        </table>
+    </div>
 <div class="SideBar">
     <a  class="SideBarButtons" style="--clr: #2774AE" onclick="redirect('{{ route('songs.index') }}')"><span><i class="fa-solid fa-house"></i></span></a>
     <a  class="SideBarButtons" style="--clr: #4FFFB0" onclick="redirect('{{ route('songs.user_edit', ['user' => Auth::id()]) }}')"><span><i class="fa-solid fa-user"></i></span></a>
@@ -199,13 +209,6 @@
 
 function redirect(url){
     window.location.href = url;
-}
-
-function deleteUser(userId, username) {
-    if (confirm(`The data for ${username} will be lost forever, are you sure?`)) {
-        var form = document.getElementById("deleteForm" + userId);
-        form.submit();
-    }
 }
 
 </script>

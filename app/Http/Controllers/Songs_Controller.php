@@ -33,13 +33,13 @@ class Songs_Controller extends Controller
 
     public function edit_selected_song(Songs_Model $song){
 
-        if(Auth::id() == $song->Owners_ID){
+        if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
 
             return view('UI.edit', ['Current_Song' => $song]);
 
         }else{
 
-            return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
 
         }
 
@@ -49,7 +49,7 @@ class Songs_Controller extends Controller
 
         $song = Songs_Model::find($id);
 
-        if(Auth::id() == $song->Owners_ID){
+        if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
 
         if (file_exists('public/Songs_Folder/' . $song->id . '.mp3')) {
             unlink('public/Songs_Folder/' . $song->id . '.mp3');
@@ -59,7 +59,7 @@ class Songs_Controller extends Controller
         return redirect(route('songs.index'));
         }else{
 
-            return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
 
         }
     }
@@ -99,7 +99,7 @@ class Songs_Controller extends Controller
 
     public function update_selected_song(Request $request, Songs_Model $song){
 
-        if(Auth::id() == $song->Owners_ID){
+        if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
         
         $request->validate([
             'Song_Name' => 'required',
@@ -117,7 +117,7 @@ class Songs_Controller extends Controller
 
         }else{
 
-            return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
 
         }
 

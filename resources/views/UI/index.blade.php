@@ -1210,7 +1210,7 @@ svg {
     @if($fixedSongAmount < 5)
     @php $displayedSongIds[] = $song->id; @endphp
     <div id="SongsUniqueId{{$song->id}}" class="Songs">
-        @if(Auth::id() == $song->Owners_ID)
+        @if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin)
         <div id="EditIcon">
         <a onclick="likeBeforeRedirect('{{ route('songs.edit', ['song' => $song->id]) }}')"><i class="fas fa-edit"></i></a>
         </div>
@@ -1257,7 +1257,7 @@ svg {
     @foreach($songs as $song)
         @if(!in_array($song->id, $displayedSongIds))
         <div class="Songs2">
-        @if(Auth::id() == $song->Owners_ID)
+        @if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin)
         <div id="EditIcon">
         <a onclick="likeBeforeRedirect('{{ route('songs.edit', ['song' => $song->id]) }}')"><i class="fas fa-edit"></i></a>
         </div>

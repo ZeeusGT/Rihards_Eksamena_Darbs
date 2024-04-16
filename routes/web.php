@@ -42,6 +42,9 @@ Route::get('songs/{user}/edit_user', [Authentication_Controller::class, 'edit_se
 Route::put('songs/{user}/edit_user', [Authentication_Controller::class, 'update_selected_user'])->name('songs.user_update')->middleware('auth');
 
 Route::get('/songs/admin', [Admin_Controller::class, 'index'])->name('songs.admin')->middleware('auth', 'admin');
+Route::get('/songs/admin/{id}/user_login', [Admin_Controller::class, 'login'])->name('songs.admin_user_login')->middleware('auth', 'admin');
+Route::get('/songs/admin/{id}/user_view', [Admin_Controller::class, 'view_user_details'])->name('songs.admin_user_view')->middleware('auth', 'admin');
+Route::delete('songs/admin/user_delete/{id}', [Admin_Controller::class, 'delete_user_by_id'])->name('songs.admin_user_delete')->middleware('auth', 'admin');
 
 Route::get('/songs/aboutus', [AboutUs_Controller::class, 'home_view'])->name('songs.aboutus')->middleware('auth');
 

@@ -62,14 +62,23 @@ class Authentication_Controller extends Controller
     }
 
     public function edit_selected_user(Users_Model $user){
-        return view('UI.userEdit', ['Current_User' => $user]);
+
+        if(Auth::id() == $user->id || Auth::user()->isAdmin){
+
+            return view('UI.userEdit', ['Current_User' => $user]);
+
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+
+        }
     }
 
     public function update_selected_user(Users_Model $user, Request $request){
 
         $isArtist = $request->has('isArtist') ? true : false;
 
-        if(Auth::id() == $user->id){
+        if(Auth::id() == $user->id || Auth::user()->isAdmin){
 
         if($request->input('username') == $user->username && $request->input('email') != $user->email){
             $validatedData = $request->validate([
@@ -128,7 +137,7 @@ class Authentication_Controller extends Controller
 
     }else{
 
-        return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+        return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
 
     }
     

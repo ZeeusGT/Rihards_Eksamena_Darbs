@@ -71,8 +71,8 @@ class Playlists_Controller extends Controller
         
 
         public function edit_selected_playlist(Playlist_Model $playlist){
-
-            if(Auth::id() == $playlist->Owners_ID){
+            
+            if(Auth::id() == $playlist->Owners_ID || Auth::user()->isAdmin){
 
             $songs = Songs_Model::all();
 
@@ -94,14 +94,14 @@ class Playlists_Controller extends Controller
 
             }else{
 
-                return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+                return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
 
             }
         }
 
         public function update_selected_playlist(Playlist_Model $playlist, Request $request){
 
-            if(Auth::id() == $playlist->Owners_ID){
+            if(Auth::id() == $playlist->Owners_ID || Auth::user()->isAdmin){
 
             $request->validate([
                 'Playlists_Name' => 'required',
@@ -119,7 +119,7 @@ class Playlists_Controller extends Controller
 
             }else{
 
-                return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+                return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
     
             }
 
@@ -154,7 +154,7 @@ class Playlists_Controller extends Controller
 
             $playlist = Playlist_Model::find($id);
 
-            if(Auth::id() == $playlist->Owners_ID){
+            if(Auth::id() == $playlist->Owners_ID || Auth::user()->isAdmin){
 
             $playlist->delete();
             
@@ -162,7 +162,7 @@ class Playlists_Controller extends Controller
 
             }else{
 
-                return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
+                return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
     
             }
         }
