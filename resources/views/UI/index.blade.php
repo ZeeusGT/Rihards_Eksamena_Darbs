@@ -117,7 +117,7 @@
             <span><i class="fa-regular fa-heart"></i></span>
         </label>
         <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}" preload="none"></audio>
-        <div class="PlayButton" onclick="Play({{$song->id}}, this)">
+        <div class="PlayButton" id="PlayButtonId{{$song->id}}" onclick="Play({{$song->id}}, this)">
             <div class="bottom"></div>
             <div class="icon">
                 <div class="left_side"></div>
@@ -159,7 +159,7 @@
             <span><i class="fa-regular fa-heart"></i></span>
         </label>
         <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}" preload="none"></audio>
-        <div class="PlayButton" onclick="Play({{$song->id}}, this)">
+        <div class="PlayButton" id="PlayButtonId{{$song->id}}" onclick="Play({{$song->id}}, this)">
             <div class="bottom"></div>
             <div class="icon">
                 <div class="left_side"></div>
@@ -304,6 +304,28 @@ playlistCreate.addEventListener('mouseenter', () => {
 playlistCreate.addEventListener('mouseleave', () => {
     playlistCreatePos2.classList.remove('animateText');
 });
+
+function handleKeyPress(event, search_type) {
+
+    if (event.key === 'Enter') {
+    if(search_type == 'song'){
+
+        var searchInputValue = document.getElementById("search_inp").value;
+        var routeUrl = "{{ route('songs.search', ['search_prompt' => ':searchInputValue']) }}";
+        routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
+        likeBeforeRedirect(routeUrl);
+
+    }else if(search_type == 'playlist'){
+
+        var searchInputValue = document.getElementById("search_inp2").value;
+        var routeUrl = "{{ route('songs.playlist_search', ['search_prompt' => ':searchInputValue']) }}";
+        routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
+        likeBeforeRedirect(routeUrl);
+
+        }
+    }
+
+}
 
 </script>
 

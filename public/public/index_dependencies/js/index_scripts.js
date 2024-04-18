@@ -1,8 +1,10 @@
-
 let globalVolume = 1;
 let ListOfLikedSongs;
+let oldAudio;
+let audio;
 
 function VolumeSliderAppear() {
+
   const volumeSliderContainer = document.querySelector('.VolumeSliderContainer');
   const visible = volumeSliderContainer.style.opacity;
 
@@ -16,19 +18,7 @@ function VolumeSliderAppear() {
     volumeSliderContainer.style.width = '0px';
     volumeSliderContainer.style.opacity = 0;
   }
-}
 
-function changeGlobalVolume(id){
-  var audio = document.getElementById(`Song${id}`);
-  audio.volume = globalVolume;
-  globalVolume = document.getElementById(`volumeSlider${id}`).value;
-
-  var elements = document.getElementsByClassName("VolumeSlider");
-  var ids = Array.from(elements).map((element) => element.id);
-
-    ids.forEach((id) => {
-      document.getElementById(id).value = globalVolume;
-    });
 }
 
 function changeGlobalVolume2(){
@@ -45,11 +35,14 @@ function changeGlobalVolume2(){
 }
 
 function toggleVolumeSlider(songId) {
+
   const volumeSlider = document.getElementById(`volumeSlider${songId}`);
   volumeSlider.classList.toggle('slider-visible');
+
 }
 
 function PlayWelcomeAnimation(bool, list_of_liked_songs) {
+
   var playAnimation = bool;
   var welcomeMessage = document.querySelector('.WelcomeMessage');
   var welcomeMessageText = document.querySelector('.WelcomeMessage p');
@@ -83,7 +76,8 @@ function PlayWelcomeAnimation(bool, list_of_liked_songs) {
     }
   });
 
-  ListOfLikedSongs = list_of_liked_songs; // Setting the value of liked songs on page load. Since this function runs *body onload*
+  ListOfLikedSongs = list_of_liked_songs; // Setting the value of liked songs on page load. Since this function runs on *windows.load*
+
 }
 
 let currentIndex = 0;
@@ -100,24 +94,23 @@ function scrollPlaylists(direction) {
     playlistWrapper.style.transform = `translateX(${newPosition}px)`;
 }
 
-function CreatePlaylist(url){
-    window.location.href = url;
-}
-
-function PlayLikedSongs(url){
-    window.location.href = url;
-}
-
 function ChangeSongsPlayDuration(id) {
+
   var audio = document.getElementById(`Song${id}`);
   audio.currentTime = document.getElementById(`durationBar${id}`).value;
+
 }
 
-
 function Play(id, current) {
-  var audio = document.getElementById(`Song${id}`);
-  var totalDuration = document.getElementById(`durationBar${id}`);
-  totalDuration.max = audio.duration;
+
+  audio = document.getElementById(`Song${id}`);
+
+  if (oldAudio != audio && oldAudio != null){
+    oldAudio.pause();
+    oldAudio.currentTime = 0;
+    oldAudio_id = parseInt(oldAudio.id.match(/\d+$/)[0]); //extracts the old audios (Song{{id}} id value, to properly animate previous buttons stopping/pausing)
+    document.getElementById(`PlayButtonId${oldAudio_id}`).classList.remove('active');
+  }
 
   if (current.className === "PlayButton active") {
     current.classList.remove('active');
@@ -128,11 +121,15 @@ function Play(id, current) {
     audio.volume = globalVolume;
     audio.play();
   }
-}
 
-function PlaylistListen(url){
+  audio.addEventListener('ended', function() {
+    current.classList.remove('active');
+    audio.currentTime = 0;
+    audio.pause();
+  });
 
-    window.location.href = url;
+  oldAudio = audio;
+
 }
 
 function likefunc(id){
@@ -151,6 +148,7 @@ function likefunc(id){
 }
 
 function likeBeforeRedirect(targetUrl) {
+
     fetch('/songs/updatelikes', {
         method: 'POST',
         headers: {
@@ -171,23 +169,5 @@ function likeBeforeRedirect(targetUrl) {
     .catch(error => {
         console.error('Error:', error);
     });
+
 }
-
-    function handleKeyPress(event, search_type) {
-      if (event.key === 'Enter') {
-
-        if(search_type == 'song'){
-            var searchInputValue = document.getElementById("search_inp").value;
-            var routeUrl = "{{ route('songs.search', ['search_prompt' => ':searchInputValue']) }}";
-            routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
-            likeBeforeRedirect(routeUrl);
-        }else if(search_type == 'playlist'){
-
-            var searchInputValue = document.getElementById("search_inp2").value;
-            var routeUrl = "{{ route('songs.playlist_search', ['search_prompt' => ':searchInputValue']) }}";
-            routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
-            likeBeforeRedirect(routeUrl);
-        }
-    }
-
-    }
