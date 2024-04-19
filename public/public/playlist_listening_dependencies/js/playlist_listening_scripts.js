@@ -90,141 +90,89 @@ function likefunc(id) {
 
 function Play(id) {
 
-    currentButton = document.getElementById(`PlayButtonWithId${id}`);
-
-    if(CurrentlyPlayling == false){
-        oldAudio = audio;
+    if (CurrentlyPlayling == false) {
+        oldAudio = audio
         audio = document.getElementById(`Song${id}`);
+
         if(oldAudio != audio){
-            currentButton.classList.toggle('active');
-            document.getElementById("PlayButtonWithId" + oldAudio.id.replace('Song', '')).classList.remove('active');
+            document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
+            document.getElementById(`AudioControlsPlayButton`).classList.remove('active');
+            document.getElementById(`AudioControlsPlayButton`).classList.toggle('active');
+            old_id = parseInt(oldAudio.id.match(/\d+$/)[0]);
+            document.getElementById(`PlayButtonWithId${old_id}`).classList.remove('active');
             oldAudio.currentTime = 0;
             oldAudio.pause();
-            audio.play();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            audio.addEventListener('ended', function() {
-                if(RepeatToggle == true){
-
-                    audio.currentTime = 0;
-                    audio.play();
-
-                }else{
-
-                NextSong()
-
-                }
-        });
+            audio.play()
+            
+            const totalDuration = formatTime(audio.duration);
+            document.getElementById('SongsDurationBar').max = audio.duration;
+            document.getElementById("TotalDuration").innerHTML = totalDuration;
+            CurrentlyPlayling = true;
         }else{
-            currentButton.classList.toggle('active');
-            audio.play();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            audio.addEventListener('ended', function() {
-
-        if(RepeatToggle == true){
-
-            audio.currentTime = 0;
-            audio.play();
-
-        }else{
-
-        NextSong()
-
+            audio.play()
+            document.getElementById(`AudioControlsPlayButton`).classList.toggle('active');
+            document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
+            CurrentlyPlayling = true;
         }
-        });
-        }
-        document.getElementById("AudioControlsPlayButton").classList.toggle('active');
-        CurrentlyPlayling = true;
 
-    }else if(CurrentlyPlayling == true){
+    }else if (CurrentlyPlayling == true){
 
-        oldAudio = audio;
+        oldAudio = audio
         audio = document.getElementById(`Song${id}`);
+
         if(oldAudio != audio){
-            currentButton.classList.toggle('active');
-            document.getElementById("PlayButtonWithId" + oldAudio.id.replace('Song', '')).classList.remove('active');
+            old_id = parseInt(oldAudio.id.match(/\d+$/)[0]);
+            document.getElementById(`PlayButtonWithId${old_id}`).classList.remove('active');
             oldAudio.currentTime = 0;
             oldAudio.pause();
-            audio.play();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            let ran = false;
+            audio.volume = globalVolume;
+            audio.play()
+            document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
 
-            audio.addEventListener('ended', function endEventListener() {
-
-                if(RepeatToggle == true){
-
-                    audio.currentTime = 0;
-                    audio.play();
-
-                }else{
-
-                if(ShuffleToggle == false){
-                if (ran == false) {
-                    ran = true;
-
-                    audio = document.getElementById(`Song${id}`);
-
-                    for(let i = 0; i < IdsArray.length; i++){
-                        if(IdsArray[i] == audio.id.replace('Song', '')){
-                            document.getElementById("PlayButtonWithId" + IdsArray[i + 1]).classList.toggle('active');
-                            break;
-                        }
-                    }
-
-                    NextSong();
-                }
-            }else{
-                    NextSong();
-            }
-        }
-            });
+            const totalDuration = formatTime(audio.duration);
+            document.getElementById('SongsDurationBar').max = audio.duration;
+            document.getElementById("TotalDuration").innerHTML = totalDuration;
+            CurrentlyPlayling = true;
 
         }else{
-            currentButton.classList.remove('active');
-            document.getElementById("AudioControlsPlayButton").classList.remove('active');
-            audio.pause();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            audio.addEventListener('ended', function() {
-                audio = document.getElementById(`Song${id}`);
-                if(RepeatToggle == true){
-
-                    audio.currentTime = 0;
-                    audio.play();
-
-                }else{
-
-                NextSong()
-
-                }
-        });
+            
+            audio.pause()
+            document.getElementById(`AudioControlsPlayButton`).classList.remove('active');
+            document.getElementById(`PlayButtonWithId${id}`).classList.remove('active');
             CurrentlyPlayling = false;
         }
 
     }else if(CurrentlyPlayling == null){
-
-        oldAudio = audio;
-        audio = document.getElementById(`Song${id}`);
-        currentButton.classList.toggle('active');
+        document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
         document.getElementById("AudioControlsPlayButton").classList.toggle('active');
-        audio.play();
-        audio.addEventListener('timeupdate', updateDurationBar);
-        audio.addEventListener('ended', function() {
-            audio = document.getElementById(`Song${id}`);
-            if(RepeatToggle == true){
-
-                audio.currentTime = 0;
-                audio.play();
-
-            }else{
-
-            NextSong()
-
-            }
-        });
-        CurrentlyPlayling = true;
         document.getElementById("AudioContainerAnimation").classList.toggle("PopUpToggle");
         document.getElementById("AudioContainerAnimation").style.pointerEvents = "auto";
+        audio = document.getElementById(`Song${id}`);
+        audio.volume = globalVolume;
+        audio.play();
+        const totalDuration = formatTime(audio.duration);
+        document.getElementById('SongsDurationBar').max = audio.duration;
+        document.getElementById("TotalDuration").innerHTML = totalDuration;
 
+        CurrentlyPlayling = true;
     }
+
+    audio.addEventListener('ended', function() {
+            if(RepeatToggle == true){
+                audio.currentTime = 0;
+                audio.play();
+            }else{
+
+                audio = document.getElementById(`Song${id}`);
+                CurrentlyPlayling = false;
+                NextSong()
+            }
+
+        });
+
+    audio.addEventListener('timeupdate', updateDurationBar);
+
+    audio.volume = globalVolume;
 
     if(oldAudio != null){
         oldAudio.closest('tr').style.backgroundColor = "";
@@ -232,11 +180,6 @@ function Play(id) {
     }else{
         audio.closest('tr').style.backgroundColor = "#299617"; //#00AB66
     }
-    const totalDuration = formatTime(audio.duration);
-    document.getElementById('SongsDurationBar').max = audio.duration;
-    document.getElementById("TotalDuration").innerHTML = totalDuration;
-    updateDurationTimer();
-    document.getElementById("CurrentDuration").innerHTML = formatTime(audio.currentTime);
 
 }
 
@@ -247,20 +190,29 @@ function updateDurationBar(){
     
     progressBar.value = audio.currentTime;
 
+    updateDurationTimer()
+
 }
+
 
 function PlayCurrentSong() {
 
+    audio_id = parseInt(audio.id.match(/\d+/)[0]);
+
     if(CurrentlyPlayling == false){
-        document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.toggle('active');
+
+        document.getElementById(`PlayButtonWithId${audio_id}`).classList.toggle('active');
         document.getElementById("AudioControlsPlayButton").classList.toggle('active');
         audio.play();
         CurrentlyPlayling = true;
+
     }else{
-        document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
+
+        document.getElementById(`PlayButtonWithId${audio_id}`).classList.remove('active');
         document.getElementById("AudioControlsPlayButton").classList.remove('active');
         audio.pause();
         CurrentlyPlayling = false;
+        
     }
 
 }
@@ -272,7 +224,13 @@ function PreviousSong(){
             document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
             audio.currentTime = 0;
             audio.pause();
-            Play(IdsArray[i - 1]);
+            if (IdsArray[i - 1] == null){
+                document.getElementById("PlayButtonWithId" + IdsArray[IdsArray.length -1]).classList.remove('active');
+                Play(IdsArray[IdsArray.length -1])
+            }else{
+                document.getElementById("PlayButtonWithId" + IdsArray[i - 1]).classList.remove('active');
+                Play(IdsArray[i - 1]); 
+            }
             break;
         }
     }
@@ -284,25 +242,41 @@ function NextSong(){
     if(ShuffleToggle == true){
 
         for(let i = 0; i < ShuffleIds.length; i++){
-        if(ShuffleIds[i] == audio.id.replace('Song', '')){
-            document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
-            audio.currentTime = 0;
-            audio.pause();
-            Play(ShuffleIds[i + 1]);
-            break;
+            if(ShuffleIds[i] == audio.id.replace('Song', '')){
+                document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
+                audio.currentTime = 0;
+                audio.pause();
+                if (i+1 == ShuffleIds.length){
+                    Shuffle()
+                    console.log("Shuffle Ending")
+                }else{
+                    document.getElementById("PlayButtonWithId" + ShuffleIds[i + 1]).classList.remove('active');
+                    Play(ShuffleIds[i + 1]); 
+                }
+                break;
+            }
         }
-    }
 
     }else{
         for(let i = 0; i < IdsArray.length; i++){
-        if(IdsArray[i] == audio.id.replace('Song', '')){
-            document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
-            audio.currentTime = 0;
-            audio.pause();
-            Play(IdsArray[i + 1]);
-            break;
+            if(IdsArray[i] == audio.id.replace('Song', '')){
+                document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
+                audio.currentTime = 0;
+                audio.pause();
+                if (i+1 == IdsArray.length){
+                    document.getElementById("PlayButtonWithId" + IdsArray[0]).classList.remove('active');
+                    Play(IdsArray[0])
+                }else{
+                    document.getElementById("PlayButtonWithId" + IdsArray[i + 1]).classList.remove('active');
+                    Play(IdsArray[i + 1]); 
+                }
+                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                Why do I have to add this classList to toggle play/pause buttons animation, only when the song ends.
+                Removing these classList toggles will somehow not play the play buttons animation once the song ends.
+                */
+                break;
+            }
         }
-    }
     }
 
 }
@@ -312,19 +286,7 @@ let intervalId;
 function updateDurationTimer() {
 
     document.getElementById("CurrentDuration").innerHTML = formatTime(audio.currentTime);
-
-    let timerValue = 0;
-
-    if (intervalId) {
-        clearInterval(intervalId);
-    }
-
-    intervalId = setInterval(() => {
-        if (CurrentlyPlayling === true) {
-            document.getElementById("CurrentDuration").innerHTML = formatTime(audio.currentTime);
-        }
-    }, 1000);
-
+    
 }
 
 function Shuffle() {
@@ -344,7 +306,6 @@ function Shuffle() {
         }
         ShuffleIds = [...IdsArray];
         shuffleArray(ShuffleIds);
-        console.log("Shuffle: " + ShuffleIds);
         ShuffleToggle = true;
         document.getElementById("ShuffleButton").classList.toggle("ToggledControlButton");
         Play(ShuffleIds[0]);
@@ -387,3 +348,21 @@ function formatTime(seconds) { /*https://stackoverflow.com/questions/3733227/jav
     return `${minutes}:${formattedSeconds}`;
     
 }
+
+function changeSongsDuration() {
+    const duration_value = document.getElementById("SongsDurationBar").value;
+    console.log("Changed, duration bars value: " + duration_value);
+    audio.currentTime = duration_value;
+    CurrentlyPlayling = false;
+    PlayCurrentSong();
+}
+
+document.addEventListener('DOMContentLoaded', function() { //? idk kp vjg
+    const duration_bar = document.getElementById("SongsDurationBar");
+
+    duration_bar.addEventListener('mousedown', function(event) {
+        //Pause
+        CurrentlyPlayling = true;
+        PlayCurrentSong();
+    });
+});

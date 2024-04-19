@@ -69,162 +69,110 @@ function likeBeforeRedirect(targetUrl) {
     .catch(error => {
         console.error('Error:', error);
     });
-    
+
 }
 
 function likefunc(id) {
 
-        const checkbox = document.getElementById(`check${id}`);
-        const parsedId = id.replace('check', '');
+    const checkbox = document.getElementById(`check${id}`);
+    const parsedId = id.replace('check', '');
 
-        if (checkbox.checked) {
-            ListOfLikedSongs.push(parsedId);
-        } else {
-            const index = ListOfLikedSongs.indexOf(parsedId);
-            if (index !== -1) {
-                ListOfLikedSongs.splice(index, 1);
-            }
+    if (checkbox.checked) {
+        ListOfLikedSongs.push(parsedId);
+    } else {
+        const index = ListOfLikedSongs.indexOf(parsedId);
+        if (index !== -1) {
+            ListOfLikedSongs.splice(index, 1);
         }
+    }
 
 }
 
-function Play(id) { //to-do update
+function Play(id) {
 
-    currentButton = document.getElementById(`PlayButtonWithId${id}`);
-
-    if(CurrentlyPlayling == false){
-        oldAudio = audio;
+    if (CurrentlyPlayling == false) {
+        oldAudio = audio
         audio = document.getElementById(`Song${id}`);
+
         if(oldAudio != audio){
-            currentButton.classList.toggle('active');
-            document.getElementById("PlayButtonWithId" + oldAudio.id.replace('Song', '')).classList.remove('active');
+            document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
+            document.getElementById(`AudioControlsPlayButton`).classList.remove('active');
+            document.getElementById(`AudioControlsPlayButton`).classList.toggle('active');
+            old_id = parseInt(oldAudio.id.match(/\d+$/)[0]);
+            document.getElementById(`PlayButtonWithId${old_id}`).classList.remove('active');
             oldAudio.currentTime = 0;
             oldAudio.pause();
-            audio.play();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            audio.addEventListener('ended', function() {
-                if(RepeatToggle == true){
-
-                    audio.currentTime = 0;
-                    audio.play();
-
-                }else{
-
-                NextSong()
-
-                }
-        });
+            audio.play()
+            
+            const totalDuration = formatTime(audio.duration);
+            document.getElementById('SongsDurationBar').max = audio.duration;
+            document.getElementById("TotalDuration").innerHTML = totalDuration;
+            CurrentlyPlayling = true;
         }else{
-            currentButton.classList.toggle('active');
-            audio.play();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            audio.addEventListener('ended', function() {
-
-        if(RepeatToggle == true){
-
-            audio.currentTime = 0;
-            audio.play();
-
-        }else{
-
-        NextSong()
-
+            audio.play()
+            document.getElementById(`AudioControlsPlayButton`).classList.toggle('active');
+            document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
+            CurrentlyPlayling = true;
         }
-        });
-        }
-        document.getElementById("AudioControlsPlayButton").classList.toggle('active');
-        CurrentlyPlayling = true;
 
-    }else if(CurrentlyPlayling == true){
+    }else if (CurrentlyPlayling == true){
 
-        oldAudio = audio;
+        oldAudio = audio
         audio = document.getElementById(`Song${id}`);
+
         if(oldAudio != audio){
-            currentButton.classList.toggle('active');
-            document.getElementById("PlayButtonWithId" + oldAudio.id.replace('Song', '')).classList.remove('active');
+            old_id = parseInt(oldAudio.id.match(/\d+$/)[0]);
+            document.getElementById(`PlayButtonWithId${old_id}`).classList.remove('active');
             oldAudio.currentTime = 0;
             oldAudio.pause();
-            audio.play();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            let ran = false;
+            audio.volume = globalVolume;
+            audio.play()
+            document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
 
-            audio.addEventListener('ended', function endEventListener() {
-
-                if(RepeatToggle == true){
-
-                    audio.currentTime = 0;
-                    audio.play();
-
-                }else{
-
-                if(ShuffleToggle == false){
-                if (ran == false) {
-                    ran = true;
-
-                    audio = document.getElementById(`Song${id}`);
-
-                    for(let i = 0; i < IdsArray.length; i++){
-                        if(IdsArray[i] == audio.id.replace('Song', '')){
-                            document.getElementById("PlayButtonWithId" + IdsArray[i + 1]).classList.toggle('active');
-                            break;
-                        }
-                    }
-
-                    NextSong();
-                }
-            }else{
-                    NextSong();
-            }
-        }
-            });
+            const totalDuration = formatTime(audio.duration);
+            document.getElementById('SongsDurationBar').max = audio.duration;
+            document.getElementById("TotalDuration").innerHTML = totalDuration;
+            CurrentlyPlayling = true;
 
         }else{
-            currentButton.classList.remove('active');
-            document.getElementById("AudioControlsPlayButton").classList.remove('active');
-            audio.pause();
-            audio.addEventListener('timeupdate', updateDurationBar);
-            audio.addEventListener('ended', function() {
-                audio = document.getElementById(`Song${id}`);
-                if(RepeatToggle == true){
-
-                    audio.currentTime = 0;
-                    audio.play();
-
-                }else{
-
-                NextSong()
-
-                }
-        });
+            
+            audio.pause()
+            document.getElementById(`AudioControlsPlayButton`).classList.remove('active');
+            document.getElementById(`PlayButtonWithId${id}`).classList.remove('active');
             CurrentlyPlayling = false;
         }
 
     }else if(CurrentlyPlayling == null){
-
-        oldAudio = audio;
-        audio = document.getElementById(`Song${id}`);
-        currentButton.classList.toggle('active');
+        document.getElementById(`PlayButtonWithId${id}`).classList.toggle('active');
         document.getElementById("AudioControlsPlayButton").classList.toggle('active');
-        audio.play();
-        audio.addEventListener('timeupdate', updateDurationBar);
-        audio.addEventListener('ended', function() {
-            audio = document.getElementById(`Song${id}`);
-            if(RepeatToggle == true){
-
-                audio.currentTime = 0;
-                audio.play();
-
-            }else{
-
-            NextSong()
-
-            }
-        });
-        CurrentlyPlayling = true;
         document.getElementById("AudioContainerAnimation").classList.toggle("PopUpToggle");
         document.getElementById("AudioContainerAnimation").style.pointerEvents = "auto";
+        audio = document.getElementById(`Song${id}`);
+        audio.volume = globalVolume;
+        audio.play();
+        const totalDuration = formatTime(audio.duration);
+        document.getElementById('SongsDurationBar').max = audio.duration;
+        document.getElementById("TotalDuration").innerHTML = totalDuration;
 
+        CurrentlyPlayling = true;
     }
+
+    audio.addEventListener('ended', function() {
+            if(RepeatToggle == true){
+                audio.currentTime = 0;
+                audio.play();
+            }else{
+
+                audio = document.getElementById(`Song${id}`);
+                CurrentlyPlayling = false;
+                NextSong()
+            }
+
+        });
+
+    audio.addEventListener('timeupdate', updateDurationBar);
+
+    audio.volume = globalVolume;
 
     if(oldAudio != null){
         oldAudio.closest('tr').style.backgroundColor = "";
@@ -232,11 +180,6 @@ function Play(id) { //to-do update
     }else{
         audio.closest('tr').style.backgroundColor = "#D6588D"; //#00AB66
     }
-    const totalDuration = formatTime(audio.duration);
-    document.getElementById('SongsDurationBar').max = audio.duration;
-    document.getElementById("TotalDuration").innerHTML = totalDuration;
-    updateDurationTimer();
-    document.getElementById("CurrentDuration").innerHTML = formatTime(audio.currentTime);
 
 }
 
@@ -246,20 +189,30 @@ function updateDurationBar(){
     const currentTime = audio.currentTime;
     
     progressBar.value = audio.currentTime;
+
+    updateDurationTimer()
+
 }
+
 
 function PlayCurrentSong() {
 
+    audio_id = parseInt(audio.id.match(/\d+/)[0]);
+
     if(CurrentlyPlayling == false){
-        document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.toggle('active');
+
+        document.getElementById(`PlayButtonWithId${audio_id}`).classList.toggle('active');
         document.getElementById("AudioControlsPlayButton").classList.toggle('active');
         audio.play();
         CurrentlyPlayling = true;
+
     }else{
-        document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
+
+        document.getElementById(`PlayButtonWithId${audio_id}`).classList.remove('active');
         document.getElementById("AudioControlsPlayButton").classList.remove('active');
         audio.pause();
         CurrentlyPlayling = false;
+        
     }
 
 }
@@ -271,7 +224,13 @@ function PreviousSong(){
             document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
             audio.currentTime = 0;
             audio.pause();
-            Play(IdsArray[i - 1]);
+            if (IdsArray[i - 1] == null){
+                document.getElementById("PlayButtonWithId" + IdsArray[IdsArray.length -1]).classList.remove('active');
+                Play(IdsArray[IdsArray.length -1])
+            }else{
+                document.getElementById("PlayButtonWithId" + IdsArray[i - 1]).classList.remove('active');
+                Play(IdsArray[i - 1]); 
+            }
             break;
         }
     }
@@ -287,10 +246,16 @@ function NextSong(){
                 document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
                 audio.currentTime = 0;
                 audio.pause();
-                Play(ShuffleIds[i + 1]);
+                if (i+1 == ShuffleIds.length){
+                    Shuffle()
+                    console.log("Shuffle Ending")
+                }else{
+                    document.getElementById("PlayButtonWithId" + ShuffleIds[i + 1]).classList.remove('active');
+                    Play(ShuffleIds[i + 1]); 
+                }
                 break;
             }
-    }
+        }
 
     }else{
         for(let i = 0; i < IdsArray.length; i++){
@@ -298,10 +263,20 @@ function NextSong(){
                 document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
                 audio.currentTime = 0;
                 audio.pause();
-                Play(IdsArray[i + 1]);
+                if (i+1 == IdsArray.length){
+                    document.getElementById("PlayButtonWithId" + IdsArray[0]).classList.remove('active');
+                    Play(IdsArray[0])
+                }else{
+                    document.getElementById("PlayButtonWithId" + IdsArray[i + 1]).classList.remove('active');
+                    Play(IdsArray[i + 1]); 
+                }
+                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                Why do I have to add this classList to toggle play/pause buttons animation, only when the song ends.
+                Removing these classList toggles will somehow not play the play buttons animation once the song ends.
+                */
                 break;
             }
-    }
+        }
     }
 
 }
@@ -311,19 +286,7 @@ let intervalId;
 function updateDurationTimer() {
 
     document.getElementById("CurrentDuration").innerHTML = formatTime(audio.currentTime);
-
-    let timerValue = 0;
-
-    if (intervalId) {
-        clearInterval(intervalId);
-    }
-
-    intervalId = setInterval(() => {
-        if (CurrentlyPlayling === true) {
-            document.getElementById("CurrentDuration").innerHTML = formatTime(audio.currentTime);
-        }
-    }, 1000);
-
+    
 }
 
 function Shuffle() {
@@ -363,7 +326,6 @@ function Repeat(){
 
 }
 
-
 function shuffleArray(array) { /*https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array*/
 
         let len = array.length,
@@ -384,5 +346,5 @@ function formatTime(seconds) { /*https://stackoverflow.com/questions/3733227/jav
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
     return `${minutes}:${formattedSeconds}`;
-
+    
 }

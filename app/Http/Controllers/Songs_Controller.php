@@ -143,4 +143,10 @@ class Songs_Controller extends Controller
         return view('UI.list_of_songs', ['results' => $results, 'search_prompt' => $search_prompt]);
     }
 
+    public function index_test(){
+
+        return view('UI.index_test');
+
+    }
+
 }

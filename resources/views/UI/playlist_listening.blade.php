@@ -112,7 +112,7 @@
 </div>
 <div id="AudioContainerAnimation" class="AudioControls">
     <div class="DurationContainer">
-        <input type="range" value="0" style="z-index: 2;" id="SongsDurationBar" class="DurationSlider">
+        <input type="range" value="0" style="z-index: 2;" onchange="changeSongsDuration()" id="SongsDurationBar" class="DurationSlider">
     </div>
     <div class="DurationTimerContainer">
         <p id="CurrentDuration"></p>
@@ -137,7 +137,7 @@
 <script>
 
 window.onload = function() {
-    onload_required(<?php echo json_encode(Auth::user()->Liked_Songs); ?>, <?php echo json_encode($array); ?>);
+    onload_required(<?php echo json_encode($array); ?>, <?php echo json_encode(Auth::user()->Liked_Songs); ?>);
 };
 
 </script>
