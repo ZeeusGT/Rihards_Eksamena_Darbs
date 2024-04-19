@@ -6,21 +6,22 @@
     font-family: 'Poppins', sans-serif;
 }
 
-svg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: -1;
-}
-
 body{
     background-color: #1d2b3a;
 }
 
+svg {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
 .Titles_Container{
-    width: inherit;
+    width:90%;
+    margin-left: 7%;
     padding: 5px;
     display: -webkit-box;
     display: -webkit-flex;
@@ -31,88 +32,144 @@ body{
     -ms-flex-pack: justify;
 }
 
+.Page_Titles{
+    color: white;
+    font-size: 50px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.Div_Container {
+    position: relative;
+    border: 3px solid black;
+    margin: 10% auto 0;
+    width: 30%;
+    height: 700px;
+    border-radius: 3.3%;
+    background: linear-gradient(180deg, #002244, #2c3968);
+    display: flex;
+}
+
+.SideBar{
+    position: fixed;
+    width: 7%;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    padding: 5px;
+    display: flex;
+    align-items: top;
+    flex-direction: column;
+    background: linear-gradient(180deg, #36454F, #010127);
+}
+
+.SideBarButtons{
+    display: block;
+    border: 3px solid white;
+    background: #191C27;
+    top: 20px;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+    padding: 10px 30px;
+    transition: 0.5s;
+    margin-bottom: 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.SideBarButtons:hover{
+    background: var(--clr);
+    box-shadow: 0 0 35px var(--clr);
+}
+
+.SideBarButtons:before{
+    content: '';
+    inset: 2px;
+    background: #27282c;
+}
+
+.SideBarButtons span{
+    position: relative;
+    z-index: 1;
+}
+
+.VolumeSlider {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.VolumeSliderContainer {
+    overflow: hidden;
+    display: flex;
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+}
+
+#EditIcon {
+    width: 30px;
+    cursor: pointer;
+    height: 30px;
+    color: white;
+    z-index: 1;
+    position: absolute;
+    right: 40px;
+    top: 7%;
+    transform: translateY(-50%);
+    font-size: 30px;
+}
+
 .Title{
     color: white;
-    font-size: 35px;
+    font-size: 50px;
     margin-bottom: 10px;
     font-weight: bold;
 }
 
-.Table_Container {
-    width: inherit;
-    margin-left: 4%;
-    padding: 5px;
+#SongsPos{
+    position: relative;
+    width:inherit;
+    align-items: left;
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    height: 180px;
+    width: 600px;
+    margin-left: 40px;
+    margin-top: 20px;
 }
 
-#Table {
-    margin-bottom: 6%;
-    border-collapse: collapse;
-    width: 80%;
-}
-
-
-#Table td,
-#Table th {
-    border-top: 3px solid #ddd;
-    border-bottom: 3px solid #ddd;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 8px;
-}
-
-.TableEven {
-  background-color: #004C7A;
-}
-
-.TableEven .bottom{
-    background-color: #005A9C;
-}
-
-.TableOdd .bottom{
-    background-color: #004170;
-}
-
-.TableOdd {
-    background-color: #006DB4;
-}
-
-.TableEven:hover, .TableOdd:hover {
-    background-color: #5D8AA8;
+.ArtistText{
     color: white;
-    cursor: pointer;
+    font-size: 30px;
 }
 
-#Table th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #0a2351;
-    color: white;
-}
-
-.Action_Container{
+#ArtistsPos{
+    position: absolute;
+    width:inherit;
+    align-items: left;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80px;
-    padding-bottom: 25px;
-}
-
-.Action_Container button{
-    top: 11px;
+    justify-content: left;
+    top: 40%;
+    margin-left: 7%;
+    width: 500px;
 }
 
 label {
-    position: relative;
+    position: absolute;
+    top: 63%;
     width: 50px;
-    margin-top: 20px;
-    margin-left: 35px;
+    left: 84%;
     align-items: right;
     display: flex;
     justify-content: right;
-    padding-right: 20px;
+    padding-right: 10px;
     cursor: pointer;
 }
 
@@ -123,15 +180,15 @@ label input {
 label span i {
     color: black;
     fill: black;
-    font-size: 40px;
+    font-size: 55px;
     transition: 0.5s;
 }
 
 label input:checked + span i {
-    animation: animateA 3s forwards;
+    animation: animateD 3s forwards;
 }
 
-@keyframes animateA{
+@keyframes animateD{
     0%{
         color: black;
     }
@@ -151,10 +208,16 @@ label input:checked + span i {
 
 .PlayButton {
     align-items: center;
-    margin-top: 20px;
     display: flex;
     justify-content: center;
+    padding-bottom: 20px;
+    position: absolute;
+    top: 72%;
+    left: 50%;
+    transform: translateX(-48%);
+    height: 15%;
 }
+
 
 .bottom {
     background: #00428c;
@@ -166,9 +229,9 @@ label input:checked + span i {
                 0 14.6px 33.4px rgba(0, 0, 0, 0.059),
                 0 35px 80px rgba(0, 0, 0, 0.07);
     cursor: pointer;
-    height: 60px;
+    height: 80px;
     position: absolute;
-    width: 60px;
+    width: 80px;
 }
 
 .PlayButton.active .bottom {
@@ -176,18 +239,18 @@ label input:checked + span i {
 }
 
 .icon {
-    height: 100px;
+    height: 130px;
     transform: rotate(-120deg);
     transition: transform 500ms;
-    width: 100px;
+    width: 130px;
     position: relative;
 }
 
 .left_side, .right_side {
     background: white;
-    height: 100px;
+    height: 130px;
     position: absolute;
-    width: 100px;
+    width: 130px;
 }
 
 .left_side {
@@ -256,8 +319,8 @@ label input:checked + span i {
         43.78608% 57.06245%,
         43.77304% 56.66309%,
         43.773% 56.25486%
-  );
-  transition: clip-path 500ms;
+    );
+transition: clip-path 500ms;
 }
 
 .right_side {
@@ -326,8 +389,8 @@ label input:checked + span i {
         43.78608% 42.62041%,
         43.77304% 43.01978%,
         43.773% 43.428%
-  );
-  transition: clip-path 500ms;
+    );
+transition: clip-path 500ms;
 }
 
 .pointer {
@@ -409,7 +472,7 @@ label input:checked + span i {
         57.44691% 56.84712%,
         57.20925% 56.93358%,
         56.87342% 56.99471%
-  );
+    );
 }
 
 .PlayButton.active .right_side {
@@ -478,201 +541,18 @@ label input:checked + span i {
         57.44691% 42.61675%,
         57.20925% 42.53029%,
         56.87342% 42.46916%
-  );
+    );
 }
 
-.ButtonsStyle2{
-    position: relative;
-    margin-left: 30px;
-    padding-left: 5px;
-    display: block;
-    border: 3px solid white;
-    background: #191C27;
-    color: #fff;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 1.5em;
-    letter-spacing: 0.1em;
-    transition: 0.5s;
-    cursor: pointer;
-    text-align: center;
-    width: 18%;
-}
-
-.ButtonsStyle2:hover{
-    background: var(--clr);
-    box-shadow: 0 0 35px var(--clr);
-}
-
-.ButtonsStyle2:before{
-    content: '';
-    inset: 2px;
-    background: #27282c;
-}
-
-.ButtonsStyle2 span{
-    position: relative;
-    z-index: 1;
-}
-
-.SideBar{
-    position: fixed;
-    width: 7%;
-    top: 0;
-    bottom: 0;
-    overflow: auto;
-    padding: 5px;
-    display: flex;
-    align-items: top;
-    flex-direction: column;
-    background: linear-gradient(180deg, #36454F, #010127);
-}
-
-.SideBarButtons{
-    display: block;
-    border: 3px solid white;
-    background: #191C27;
-    top: 20px;
-    color: #fff;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 1.5em;
-    letter-spacing: 0.1em;
-    font-weight: 400;
-    padding: 10px 30px;
-    transition: 0.5s;
-    margin-bottom: 15px;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-}
-
-.SideBarButtons:hover{
-    background: var(--clr);
-    box-shadow: 0 0 35px var(--clr);
-}
-
-.SideBarButtons:before{
-    content: '';
-    inset: 2px;
-    background: #27282c;
-}
-
-.SideBarButtons span{
-    position: relative;
-    z-index: 1;
-}
-
-.controls {
+.DurationContainer {
+    color: white;
+    font-size: 18px;
+    display: none;
     position: absolute;
-    top: 49%;
-    left: 22%;
-    width: 60px;
-    height: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    transform: rotate(90deg);
-    transform-origin: top left;
-    overflow: hidden;
-}
-
-.controls i {
-    font-size: 29px;
-    position: relative;
-    z-index: 1;
-    cursor: pointer;
-}
-
-.VolumeSlider {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-.controls .slider-visible {
-    transform: translateY(0);
-}
-
-.VolumeSliderContainer {
-    overflow: hidden;
-    display: flex;
-    transition: all 0.5s ease-in-out;
-    opacity: 0;
-}
-
-.AudioControls{
-    position: fixed;
-    background: linear-gradient(180deg, #002244, #2c3968);
-    width: 24%;
-    left: 43%;
-    border-radius: 20px;
-    bottom: 0;
-    height: 10.5%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    opacity: 0;
-    pointer-events: none;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: center;
-    -ms-flex-pack: justify;
-}
-
-.AudioControls .PlayButton{
-    padding-bottom: -2px;
-}
-
-.ToggledControlButton{
-    animation: animateK 3s forwards;
-}
-
-.Buttons{ /*Vjdzigs prieks pogu positioning*/
-    position: absolute;
-    height: 10px;
-    margin-top: 3%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: center;
-    -ms-flex-pack: justify;
-}
-
-@keyframes animateK{
-    0%{
-        color: black;
-    }
-    50%{
-        color: #1F75FE;
-        text-shadow: 0 0 10px #7DF9FF,
-                     0 0 20px #7DF9FF,
-                     0 0 30px #008E97;
-    }
-    100%{
-        color: #00FFFF;
-        text-shadow: 0 0 4px #007791,
-                     0 0 8px #B2FFFF,
-                     0 0 12px #00BFFF;
-    }
-}
-
-.DurationContainer{
-    position: absolute;
-    padding-top: 35px;
-    width: 220px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: center;
-    -ms-flex-pack: justify;
+    top: 75%;
+    left: 50%;
+    transform: translateX(-83%);
+    width: 180px;
 }
 
 .DurationSlider{
@@ -680,8 +560,9 @@ label input:checked + span i {
 }
 
 .DurationTimerContainer{
-    color: white;
-    padding-top: 10px;
+    margin-left: 43px;
+    margin-top: -50px;
+    padding-bottom: 10px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -693,7 +574,7 @@ label input:checked + span i {
 }
 
 #CurrentDuration{
-    margin-right: 68%;
+    margin-right: 93%;
 }
 
 .PopUpToggle {
@@ -701,16 +582,55 @@ label input:checked + span i {
 }
 
 @keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
-#AudioControlsPlayButton{
-    padding-top: 50px;
+#PlayButtonAnimation{
+    display: flex;
+    margin-right: 50%;
+}
+
+.SlideDown {
+    animation: slideDown 1s ease forwards;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(60px);
+    }
+}
+
+@keyframes animateBox{ /*https://cssbud.com/css-generator/css-glow-generator/*/
+    100%{
+        -webkit-box-shadow:0px 0px 125px 40px rgba(34,108,199,0.9);
+        -moz-box-shadow: 0px 0px 125px 40px rgba(34,108,199,0.9);
+        box-shadow: 0px 0px 125px 40px rgba(34,108,199,0.9);
+    }
+}
+
+.animateBox {
+    animation: animateBox 1s linear forwards;
+}
+
+.playback_Box_animation{
+    animation: animateBoxPlayback 1s linear forwards;
+}
+
+@keyframes animateBoxPlayback{ /*https://cssbud.com/css-generator/css-glow-generator/*/
+    0%{
+        -webkit-box-shadow:0px 0px 125px 40px rgba(34,108,199,0.9);
+        -moz-box-shadow: 0px 0px 125px 40px rgba(34,108,199,0.9);
+        box-shadow: 0px 0px 125px 40px rgba(34,108,199,0.9);
+    }
+    100%{
+
+    }
 }

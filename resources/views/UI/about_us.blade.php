@@ -25,7 +25,7 @@
             <p class="Page_Titles">Helpful Tips</p>
         </div>
         <div class="Paragraph_Container" id="Paragraph_Container2">
-            <img src="/public/Img_Folder/SideBar.png">
+            <img src="/public/aboutus_dependencies/Img_Folder/SideBar.png">
             <ul id="List_Positioning" class="Page_Paragraphs">
                 <li>Main Page - Redirects You To The Main Page Of Rihify</li>
                 <li>Your Account - Edit Your Account Details Here</li>

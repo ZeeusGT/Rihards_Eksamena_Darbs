@@ -321,13 +321,19 @@ textarea {
 
 @keyframes animateD{
     0%{
-        text-shadow: 0 0 4px #00665c, 0 0 8px #00665c, 0 0 12px #00665c;
+        text-shadow: 0 0 4px #00665c,
+                     0 0 8px #00665c,
+                     0 0 12px #00665c;
     }
     50%{
-        text-shadow: 0 0 10px #00dfc4, 0 0 20px #00dfc4, 0 0 30px #00dfc4;
+        text-shadow: 0 0 10px #00dfc4,
+                     0 0 20px #00dfc4,
+                     0 0 30px #00dfc4;
     }
      75%{
-        text-shadow: 0 0 4px #00665c, 0 0 8px #00665c, 0 0 12px #00665c;
+        text-shadow: 0 0 4px #00665c,
+                     0 0 8px #00665c,
+                     0 0 12px #00665c;
     }
     100%{
             

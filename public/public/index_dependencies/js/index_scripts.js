@@ -80,20 +80,6 @@ function PlayWelcomeAnimation(bool, list_of_liked_songs) {
 
 }
 
-let currentIndex = 0;
-const playlistWrapper = document.querySelector('.PlaylistsWrapper');
-const playlists = document.querySelectorAll('.User_Playlists');
-
-function scrollPlaylists(direction) {
-    const playlistWidth = playlists[0].offsetWidth + 36;
-    const maxIndex = playlists.length - 1;
-  
-    currentIndex = Math.min(Math.max(currentIndex + direction, 0), maxIndex);
-    const newPosition = -currentIndex * playlistWidth;
-  
-    playlistWrapper.style.transform = `translateX(${newPosition}px)`;
-}
-
 function ChangeSongsPlayDuration(id) {
 
   var audio = document.getElementById(`Song${id}`);

@@ -200,7 +200,7 @@ function updateDurationTimer() {
     
 }
 
-function formatTime(seconds) { //https://stackoverflow.com/questions/3733227/javascript-seconds-to-minutes-and-seconds
+function formatTime(seconds) { /*https://stackoverflow.com/questions/3733227/javascript-seconds-to-minutes-and-seconds*/
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;

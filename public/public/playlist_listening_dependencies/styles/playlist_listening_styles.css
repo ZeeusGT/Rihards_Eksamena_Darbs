@@ -16,7 +16,7 @@ svg {
 }
 
 body{
-    background-color: #1d2b3a;
+    background-color: #1b2e30;
 }
 
 .Titles_Container{
@@ -38,6 +38,27 @@ body{
     font-weight: bold;
 }
 
+.EditButton_Container{
+    width: inherit;
+    padding: 5px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: center;
+    -ms-flex-pack: justify;
+}
+
+.EditButton_Container a{
+    color: white;
+    left: 40%;
+    margin-top: 10px;
+    font-size: 35px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
 .Table_Container {
     width: inherit;
     margin-left: 4%;
@@ -52,43 +73,39 @@ body{
     width: 80%;
 }
 
-
 #Table td,
 #Table th {
-    border-top: 3px solid #ddd;
-    border-bottom: 3px solid #ddd;
+    border: 3px solid #ddd;
     font-size: 20px;
     font-weight: bold;
     padding: 8px;
 }
 
 .TableEven {
-  background-color: #004C7A;
+    background-color: #2d6a4f;
 }
 
 .TableEven .bottom{
-    background-color: #005A9C;
+    background-color: #74c69d;
 }
 
 .TableOdd .bottom{
-    background-color: #004170;
+    background-color: #2d6a4f;
 }
 
 .TableOdd {
-    background-color: #006DB4;
+    background-color: #40916c;
 }
 
 .TableEven:hover, .TableOdd:hover {
-    background-color: #5D8AA8;
-    color: white;
-    cursor: pointer;
+    background-color: #008080;
 }
 
 #Table th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #0a2351;
+    background-color: #1b4332;
     color: white;
 }
 
@@ -137,8 +154,8 @@ label input:checked + span i {
     }
     50%{
         color: #960018;
-        text-shadow: 0 0 10px #960018,
-                     0 0 20px #960018,
+        text-shadow: 0 0 10px #960018, 
+                     0 0 20px #960018, 
                      0 0 30px #960018;
     }
     100%{
@@ -525,7 +542,7 @@ label input:checked + span i {
     display: flex;
     align-items: top;
     flex-direction: column;
-    background: linear-gradient(180deg, #36454F, #010127);
+    background: linear-gradient(240deg, #1b2e30, #008080);
 }
 
 .SideBarButtons{
@@ -606,10 +623,8 @@ label input:checked + span i {
 
 .AudioControls{
     position: fixed;
-    background: linear-gradient(180deg, #002244, #2c3968);
-    width: 24%;
-    left: 43%;
-    border-radius: 20px;
+    background-color: #1b4332;
+    width: 100%;
     bottom: 0;
     height: 10.5%;
     display: -webkit-box;
@@ -627,12 +642,41 @@ label input:checked + span i {
     padding-bottom: -2px;
 }
 
+.AudioControls #Skip_Left{
+    padding-bottom: 27.5px;
+    font-size: 30px;
+    position: relative;
+    transform: rotate(180deg);
+    cursor: pointer;
+}
+
+.AudioControls #Skip_Right{
+    font-size: 30px;
+    position: relative;
+    cursor: pointer;
+}
+
+#ShuffleButton{
+    font-size: 20px;
+    cursor: pointer;
+    padding-right: 15px;
+    padding-top: 3px;
+}
+
+#RepeatButton{
+    font-size: 20px;
+    cursor: pointer;
+    padding-top: 3px;
+    padding-left: 15px;
+}
+
 .ToggledControlButton{
     animation: animateK 3s forwards;
 }
 
-.Buttons{ /*Vjdzigs prieks pogu positioning*/
+.Buttons{
     position: absolute;
+    background-color: #1b4332;
     height: 10px;
     margin-top: 3%;
     display: -webkit-box;
@@ -680,7 +724,6 @@ label input:checked + span i {
 }
 
 .DurationTimerContainer{
-    color: white;
     padding-top: 10px;
     display: -webkit-box;
     display: -webkit-flex;
@@ -701,16 +744,12 @@ label input:checked + span i {
 }
 
 @keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-#AudioControlsPlayButton{
-    padding-top: 50px;
+    0% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
