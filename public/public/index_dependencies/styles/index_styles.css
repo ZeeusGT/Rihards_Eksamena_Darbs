@@ -688,10 +688,10 @@ label input:checked + span i {
     font-size: 50px;
     margin-top: 10px;
     font-weight: bold;
-    animation: slideIn 4s ease forwards 6s;
+    animation: slideInTitles 4s ease forwards 6s;
 }
 
-@keyframes slideIn {
+@keyframes slideInTitles {
   0% {
     opacity: 0;
     transform: translateY(-100%);

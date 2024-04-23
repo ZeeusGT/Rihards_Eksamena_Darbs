@@ -161,7 +161,7 @@
 <script>
 
 window.onload = function() {
-    onload_required(<?php echo json_encode(Auth::user()->Liked_Songs); ?>, <?php echo $playlist->song_id_list; ?>);
+    onload_required(<?php echo json_encode(Auth::user()->Liked_Songs); ?>, <?php echo json_encode($array); ?>);
 };
 
 </script>
