@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Songs_Model;
 use App\Models\Playlist_Model;
-use App\Models\UserList_Model;
+use App\Models\Users_Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Playlists_Controller extends Controller
 {
 
         public function index(){
+
             $songs = Songs_Model::all();
             $userId = Auth::id();
 
-            $userData = UserList_Model::find($userId);
+            $userData = Users_Model::find($userId);
             
             $songIds = $userData->Liked_Songs ?? [];
             return view('UI.playlist_creation', ['songs' => $songs, 'array' => $songIds]);
@@ -58,7 +60,22 @@ class Playlists_Controller extends Controller
             return view('UI.playlist_listening', ['songs' => $songs, 'array' => $songIds, 'playlist' => $play_list]);
         }
 
+        public function listen_to_liked_songs(Playlist_Model $playlist){
+
+            $user = Auth::user();
+        
+            $likedSongs = $user->Liked_Songs;
+        
+            $songs = Songs_Model::whereIn('id', $likedSongs)->get();
+        
+            return view('UI.playlist_liked_songs', ['songs' => $songs, 'array' => $likedSongs]);
+        }
+        
+
         public function edit_selected_playlist(Playlist_Model $playlist){
+            
+            if(Auth::id() == $playlist->Owners_ID || Auth::user()->isAdmin){
+
             $songs = Songs_Model::all();
 
             $play_list = Playlist_Model::findOrFail($playlist->id);
@@ -71,16 +88,22 @@ class Playlists_Controller extends Controller
             $array = array_map('intval', $array);
 
             $userId = Auth::id();
-            $userData = UserList_Model::find($userId);
+            $userData = Users_Model::find($userId);
             
             $songIds = $userData->Liked_Songs ?? [];
-        
-            //$songIds = $array;
 
             return view('UI.playlist_edit', ['songs' => $songs, 'playlist' => $playlist, 'array' => $songIds, 'current_playlists_data' => $array]);
+
+            }else{
+
+                return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+
+            }
         }
 
         public function update_selected_playlist(Playlist_Model $playlist, Request $request){
+
+            if(Auth::id() == $playlist->Owners_ID || Auth::user()->isAdmin){
 
             $request->validate([
                 'Playlists_Name' => 'required',
@@ -96,6 +119,11 @@ class Playlists_Controller extends Controller
 
             return redirect(route('songs.index'));
 
+            }else{
+
+                return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+    
+            }
         }
     
         public function store_songs(Request $request){
@@ -122,18 +150,28 @@ class Playlists_Controller extends Controller
             return redirect(route('songs.index'));
         }
 
-        public function listen_to_liked_songs(){
+        public function delete_playlist_by_id($id){
 
-            $songs = Songs_Model::all();
-            $userId = Auth::id();
+            $playlist = Playlist_Model::find($id);
 
-            $userData = UserList_Model::find($userId);
+            if(Auth::id() == $playlist->Owners_ID || Auth::user()->isAdmin){
+
+            $playlist->delete();
             
-            $songIds = $userData->Liked_Songs ?? [];
+            return redirect(route('songs.index'));
+
+            }else{
+
+                return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
     
-            return view('UI.playlist_listening', ['songs' => $songs, 'array' => $songIds]);
-    
+            }
+        }
+
+        public function search_playlist_by_name(Request $request, $search_prompt){
+
+            $results = Playlist_Model::where('name', 'like', "%$search_prompt%")->get();
+        
+            return view('UI.list_of_playlists', ['results' => $results, 'search_prompt' => $search_prompt]);
         }
         
-
 }

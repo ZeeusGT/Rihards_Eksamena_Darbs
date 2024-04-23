@@ -46,19 +46,34 @@
     transition: 0.5s;
 }
 
-.inputBox input:focus ~ span {
-    color: #00dfc4;
+.inputBox input.focused ~ span {
+    color: #48A860;
     transform: translateX(10px) translateY(-7px);
     font-size: 0.65em;
     padding: 0 10px;
     background: #1d2b3a;
-    border-left: 1px solid #00dfc4;
-    border-right: 1px solid #00dfc4;
+    border-left: 1px solid #48A860;
+    border-right: 1px solid #48A860;
+    letter-spacing: 0.2em;
+}
+
+.inputBox input.focused{
+    border: 2px solid #48A860;
+}
+
+.inputBox input:focus ~ span {
+    color: #48A860;
+    transform: translateX(10px) translateY(-7px);
+    font-size: 0.65em;
+    padding: 0 10px;
+    background: #1d2b3a;
+    border-left: 1px solid #48A860;
+    border-right: 1px solid #48A860;
     letter-spacing: 0.2em;
 }
 
 .inputBox input:focus{
-    border: 1px solid #00dfc4;
+    border: 2px solid #48A860;
 }
 
     .button-link {
@@ -534,11 +549,11 @@ label:after{
         <span></span>
     </div>
     <div class="inputBox">
-    <input type='password' id="Password1" name="password"></input>
+    <input type='password' id="Password1" onchange="freezeAnimation('Password1')" name="password"></input>
         <span>Password</span>
     </div>
     <div class="inputBox">
-    <input type='password' id="Password2" name="password_confirmation">
+    <input type='password' id="Password2" onchange="freezeAnimation('Password2')"  name="password_confirmation">
         <span>Re-Enter Password</span>
     </div>
     <main>
@@ -562,7 +577,7 @@ function submitForm(){
     if(document.getElementById("Password1").value.length < 6){
         Errors.innerHTML = "Password Too Short"
     }else if(document.getElementById("Password1").value != document.getElementById("Password2").value){
-        Errors.innerHTML = "Passwords Don't Match"
+        Errors.innerHTML = "Passwords Doesn't Match"
     }else{
         document.getElementById("UpdateForm").submit();
     }
@@ -572,6 +587,21 @@ function PasswordRegex(){
     if(document.getElementById("")){
         Errors.innerHTML = "Password Too Short"
     }
+}
+
+function freezeAnimation(id) {
+    const inputElement = document.getElementById(id);
+
+        if (inputElement.value !== "") {
+            inputElement.classList.add("focused");
+        } else {
+            inputElement.classList.remove("focused");
+        }
+}
+
+function checkInputFields(){
+    freezeAnimation('input_username')
+    freezeAnimation('input_email')
 }
 
 </script>

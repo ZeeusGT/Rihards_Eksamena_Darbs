@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserList_Model;
+use App\Models\Users_Model;
 use App\Models\Playlist_Model;
 use App\Models\Songs_Model;
 use Illuminate\Support\Facades\Hash;
@@ -12,17 +12,20 @@ use Illuminate\Support\Facades\Auth;
 class Authentication_Controller extends Controller
 {
     public function index(){
+
         return view('UI.userLogin');
     }
 
     public function register_redirect(){
+
         return view('UI.userRegister');
     }
 
     public function register(Request $request){
+
         $validatedData = $request->validate([
-            'username' => 'required|unique:user_list,username',
-            'email' => 'required|email|unique:user_list,email',
+            'username' => 'required|unique:users,username',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
     
@@ -30,7 +33,7 @@ class Authentication_Controller extends Controller
     
         $isArtist = $request->has('isArtist') ? true : false;
     
-        $newUser = UserList_Model::create([
+        $newUser = Users_Model::create([
             'username' => $validatedData['username'],
             'email' => $validatedData['email'],
             'password' => $hashedPassword,
@@ -41,11 +44,6 @@ class Authentication_Controller extends Controller
     }
 
     public function login(Request $request){
-        $loginValue = $request->input('username');
-    
-        $field = filter_var($loginValue, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-    
-        $request->merge([$field => $loginValue]);
     
         $credentials = $request->only('username', 'password');
     
@@ -63,78 +61,93 @@ class Authentication_Controller extends Controller
             return back()->withErrors([
                 'errors' => 'Password or Username Incorrect',
             ]);
-    }
-    }
-
-    public function edit_selected_user(UserList_Model $user){
-        return view('UI.userEdit', ['Current_User' => $user]);
+        }
     }
 
-    public function update_selected_user(UserList_Model $user, Request $request){
+    public function edit_selected_user(Users_Model $user){
+
+        if(Auth::id() == $user->id || Auth::user()->isAdmin){
+
+            return view('UI.userEdit', ['Current_User' => $user]);
+
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+
+        }
+    }
+
+    public function update_selected_user(Users_Model $user, Request $request){
 
         $isArtist = $request->has('isArtist') ? true : false;
 
-    if($request->input('username') == $user->username && $request->input('email') != $user->email){
-        $validatedData = $request->validate([
-            'email' => 'required|email|unique:user_list,email',
-        ]);
+        if(Auth::id() == $user->id || Auth::user()->isAdmin){
 
-        $user->update([
-            'email' => $validatedData['email'],
-            'isArtist' => $isArtist
-        ]);
+            if($request->input('username') == $user->username && $request->input('email') != $user->email){
+                $validatedData = $request->validate([
+                    'email' => 'required|email|unique:users,email',
+                ]);
 
-    }else if($request->input('username') != $user->username && $request->input('email') == $user->email){
-        $validatedData = $request->validate([
-            'username' => 'required|unique:user_list,username',
-        ]);
+                $user->update([
+                    'email' => $validatedData['email'],
+                    'isArtist' => $isArtist
+                ]);
 
-        $user->update([
-            'username' => $validatedData['username'],
-            'isArtist' => $isArtist
-        ]);
-    }else if($request->input('username') != $user->username && $request->input('email') != $user->email){
+            }else if($request->input('username') != $user->username && $request->input('email') == $user->email){
+                $validatedData = $request->validate([
+                    'username' => 'required|unique:users,username',
+                ]);
 
-        $validatedData = $request->validate([
-            'username' => 'required|unique:user_list,username',
-            'email' => 'required|email|unique:user_list,email',
-        ]);
+                $user->update([
+                    'username' => $validatedData['username'],
+                    'isArtist' => $isArtist
+                ]);
+            }else if($request->input('username') != $user->username && $request->input('email') != $user->email){
 
-        $user->update([
-            'username' => $validatedData['username'],
-            'email' => $validatedData['email'],
-            'isArtist' => $isArtist
-        ]);
+                $validatedData = $request->validate([
+                    'username' => 'required|unique:users,username',
+                    'email' => 'required|email|unique:users,email',
+                ]);
 
+                $user->update([
+                    'username' => $validatedData['username'],
+                    'email' => $validatedData['email'],
+                    'isArtist' => $isArtist
+                ]);
+
+            }
+
+            if($request->input('password') != null){
+
+                $validatedData = $request->validate([
+                    'password' => 'required|min:6|confirmed'
+                ]);
+
+                $hashedPassword = Hash::make($validatedData['password']);
+
+                $user->update([
+                    'password' => $hashedPassword,
+                    'isArtist' => $isArtist
+                ]);
+
+            }
+
+            $user->update([
+                'isArtist' => $isArtist
+            ]);
+
+            return redirect(route('songs.index'));
+
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+
+        }
     }
-
-    if($request->input('password') != null){
-
-        $validatedData = $request->validate([
-            'password' => 'required|min:6|confirmed'
-        ]);
-
-        $hashedPassword = Hash::make($validatedData['password']);
-
-        $user->update([
-            'password' => $hashedPassword,
-            'isArtist' => $isArtist
-        ]);
-
-    }
-
-    $user->update([
-        'isArtist' => $isArtist
-    ]);
-
-    return redirect(route('songs.index'));
-
-}
 
     public function passwordReset(){
 
         return view('UI.passwordReset');
-
     }
 
 }

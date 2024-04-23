@@ -22,6 +22,6 @@ class ArtistCheck
             return $next($request);
         }
 
-        return redirect()->route('songs.index')->with('error', 'You do not have permission to access this page as an artist.');
+        return redirect()->route('songs.index')->with('error', 'You do not have permission to access this page without being an artist.');
     }
 }

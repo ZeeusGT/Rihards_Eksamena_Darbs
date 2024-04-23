@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Songs_Model;
 use App\Models\Playlist_Model;
-use App\Models\UserList_Model;
+use App\Models\Users_Model;
 use Illuminate\Support\Facades\Auth;
 
 class Songs_Controller extends Controller
 {
     public function index(){
+
         $userId = Auth::id();
         $randomPlaylists = Playlist_Model::where('owners_id', '!=', $userId)->get()->shuffle()->take(5);
         $usersPlaylists = Playlist_Model::where('owners_id', '=', $userId)->get();
@@ -20,72 +21,87 @@ class Songs_Controller extends Controller
         $playlist = Playlist_Model::all();
 
         return view('UI.index', ['songs' => $songs, 'usersPlaylist' => $usersPlaylists, 'randomPlaylist' => $randomPlaylists, 'totalUserPlaylist' => $totalUserPlaylists, 'playlists' => $playlist, 'PlayAnimation' => 0]);
-
     }
 
     public function create(){
+
         return view('UI.create');
     }
 
-    public function view(){
-        return view('UI.view');
+    public function view_selected_song(Songs_Model $song){
+
+        return view('UI.view', ['Current_Song' => $song]);
     }
 
     public function edit_selected_song(Songs_Model $song){
-        return view('UI.edit', ['Current_Song' => $song]);
+
+        if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
+
+            return view('UI.edit', ['Current_Song' => $song]);
+
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+
+        }
     }
 
-    public function store_songs(Request $request)
-{
-    // Check if the file is valid
-    if ($request->file('Song')->isValid()) {
-        // File is valid
-    } else {
-        // File upload failed
-        return redirect()->back()->withErrors(['error' => 'File upload failed.'])->withInput();
+    public function delete_song_by_id($id){
+
+        $song = Songs_Model::find($id);
+
+        if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
+
+        if (file_exists('public/Songs_Folder/' . $song->id . '.mp3')) {
+            unlink('public/Songs_Folder/' . $song->id . '.mp3');
+        }
+        $song->delete();
+        
+        return redirect(route('songs.index'));
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+
+        }
     }
+    
+    public function store_songs(Request $request) {
 
-    // Debug statement
-    echo "Form data received: ";
-    print_r($request->all());
+        $validatedData = $request->validate([
+            'Song_Name' => 'required|max:25',
+            'Artists_Name' => 'required',
+            'Songs_Genre' => 'required',
+            'Song' => 'required'
+        ]);
 
-    $validatedData = $request->validate([
-        'Song_Name' => 'required|max:25',
-        'Artists_Name' => 'required',
-        'Songs_Genre' => 'required',
-        'Song' => 'required'
-    ]);
-
-    // Debug statement
-    echo "Validated data: ";
-    print_r($validatedData);
-
-    if ($latestSong = Songs_Model::latest()->first() == null) {
-        $Songs_Directory = 1;
-    } else {
         $latestSong = Songs_Model::latest()->first();
-        $Songs_Directory = $latestSong->id + 1;
+
+        if($latestSong == null){
+            $songId = 1;
+        }else{
+            $songId = $latestSong->id + 1;
+        }
+    
+        $song = new Songs_Model();
+        $song->Song_Name = $validatedData['Song_Name'];
+        $song->Artists_Name = $validatedData['Artists_Name'];
+        $song->Songs_Genre = $validatedData['Songs_Genre'];
+        $song->Owners_ID = Auth::id();
+    
+        $file = $request->file('Song');
+        $fileName = $songId . '.mp3';
+        $file->move('public/Songs_Folder', $fileName);
+    
+        $song->Files_Name = $fileName;
+        $song->save();
+    
+        return redirect()->route('songs.index');
     }
-
-    $song = new Songs_Model();
-    $song->Song_Name = $validatedData['Song_Name'];
-    $song->Artists_Name = $validatedData['Artists_Name'];
-    $song->Songs_Genre = $validatedData['Songs_Genre'];
-    $song->Files_Name = $Songs_Directory . ".mp3";
-    $song->Owners_ID = Auth::id();
-
-    $song->save();
-
-    // Store the uploaded file
-    $request->file('Song')->storeAs('public/Songs', $Songs_Directory . ".mp3");
-
-    return redirect(route('songs.index'));
-}
-
-
     
 
     public function update_selected_song(Request $request, Songs_Model $song){
+
+        if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
         
         $request->validate([
             'Song_Name' => 'required',
@@ -93,24 +109,19 @@ class Songs_Controller extends Controller
             'Songs_Genre' => 'required',
         ]);
 
-        $Songs_Directory = $request->input('Song');
-
-        if($request->file('NewSong') == null){
-
-        }else{
-            $Song_File = file_get_contents($request->file('NewSong'));
-            Storage::disk('public')->put('Songs/'.$Songs_Directory, $Song_File);
-        }
-
         $song->update([
             'Song_Name' => $request->input('Song_Name'),
             'Artists_Name' => $request->input('Artists_Name'),
             'Songs_Genre' => $request->input('Songs_Genre'),
-            'Files_Name' => $Songs_Directory
         ]);
         
         return redirect(route('songs.index'));
 
+        }else{
+
+            return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
+
+        }
     }
 
     public function store_liked_songs(Request $request){
@@ -124,6 +135,18 @@ class Songs_Controller extends Controller
         Auth::logout();
 
         return redirect(route('songs.login'));
+    }
+
+    public function search_song_by_name(Request $request, $search_prompt){ //to-do maybe add a feature, where you can search songs by giving an artists name prompt
+
+        $results = Songs_Model::where('Song_Name', 'like', "%$search_prompt%")->get();
+    
+        return view('UI.list_of_songs', ['results' => $results, 'search_prompt' => $search_prompt]);
+    }
+
+    public function index_test(){
+
+        return view('UI.index_test');
     }
 
 }
