@@ -6,9 +6,6 @@ use App\Http\Controllers\Admin_Controller;
 use App\Http\Controllers\Mail_Controller;
 use App\Http\Controllers\AboutUs_Controller;
 
-
-// Your other routes...
-
 Route::get('/', function () {
     return view('UI.userLogin');
 });
