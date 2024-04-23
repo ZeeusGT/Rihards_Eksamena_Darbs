@@ -47,8 +47,8 @@
 <div class="Titles_Container">
     <p class="Title">Search Results For {{$search_prompt}}</p>
     <div class="search-box">
-    <button class="btn-search"><i class="fas fa-search"></i></button>
-    <input onkeydown="handleKeyPress(event)" type="text" id="search_inp" class="input-search" placeholder="Playlists Name:">
+        <button class="btn-search"><i onclick="search()" class="fas fa-search"></i></button>
+        <input onkeydown="handleKeyPress(event)" type="text" id="search_inp" class="input-search" placeholder="Songs Name:">
     </div>
 </div>
     <div class="Table_Container">
@@ -94,14 +94,23 @@
 
 function handleKeyPress(event) {
 
-    if (event.key === 'Enter') {
+if (event.key === 'Enter') {
+    search()
 
-        var searchInputValue = document.getElementById("search_inp").value;
-        var routeUrl = "{{ route('songs.playlist_search', ['search_prompt' => ':searchInputValue']) }}";
-        routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
-        redirect(routeUrl);
+}
 
-    }
+}
+
+function likeBeforeRedirect(targetUrl) {
+    window.location.href = targetUrl;
+
+}
+
+function search(type){
+    var searchInputValue = document.getElementById("search_inp").value;
+    var routeUrl = "{{ route('songs.playlist_search', ['search_prompt' => ':searchInputValue']) }}";
+    routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
+    likeBeforeRedirect(routeUrl);
 
 }
 

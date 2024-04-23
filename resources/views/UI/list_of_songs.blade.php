@@ -46,6 +46,10 @@
 </svg>
 <div class="Titles_Container">
     <p class="Title">Search Results For {{$search_prompt}}</p>
+    <div class="search-box">
+        <button class="btn-search"><i onclick="search()" class="fas fa-search"></i></button>
+        <input onkeydown="handleKeyPress(event)" type="text" id="search_inp" class="input-search" placeholder="Songs Name:">
+    </div>
 </div>
     <div class="Table_Container">
     <table id="Table">
@@ -132,6 +136,24 @@
 window.onload = function() {
     onload_required(<?php echo json_encode(Auth::user()->Liked_Songs); ?>);
 };
+
+function handleKeyPress(event) {
+
+    if (event.key === 'Enter') {
+        search()
+
+    }
+
+}
+
+function search(){
+
+    var searchInputValue = document.getElementById("search_inp").value;
+    var routeUrl = "{{ route('songs.search', ['search_prompt' => ':searchInputValue']) }}";
+    routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
+    likeBeforeRedirect(routeUrl);
+
+}
 
 </script>
 

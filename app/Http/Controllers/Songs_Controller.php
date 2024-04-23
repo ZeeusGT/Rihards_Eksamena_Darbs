@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class Songs_Controller extends Controller
 {
     public function index(){
+
         $userId = Auth::id();
         $randomPlaylists = Playlist_Model::where('owners_id', '!=', $userId)->get()->shuffle()->take(5);
         $usersPlaylists = Playlist_Model::where('owners_id', '=', $userId)->get();
@@ -20,14 +21,15 @@ class Songs_Controller extends Controller
         $playlist = Playlist_Model::all();
 
         return view('UI.index', ['songs' => $songs, 'usersPlaylist' => $usersPlaylists, 'randomPlaylist' => $randomPlaylists, 'totalUserPlaylist' => $totalUserPlaylists, 'playlists' => $playlist, 'PlayAnimation' => 0]);
-
     }
 
     public function create(){
+
         return view('UI.create');
     }
 
     public function view_selected_song(Songs_Model $song){
+
         return view('UI.view', ['Current_Song' => $song]);
     }
 
@@ -42,7 +44,6 @@ class Songs_Controller extends Controller
             return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
 
         }
-
     }
 
     public function delete_song_by_id($id){
@@ -65,6 +66,7 @@ class Songs_Controller extends Controller
     }
     
     public function store_songs(Request $request) {
+
         $validatedData = $request->validate([
             'Song_Name' => 'required|max:25',
             'Artists_Name' => 'required',
@@ -120,7 +122,6 @@ class Songs_Controller extends Controller
             return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
 
         }
-
     }
 
     public function store_liked_songs(Request $request){
@@ -136,7 +137,7 @@ class Songs_Controller extends Controller
         return redirect(route('songs.login'));
     }
 
-    public function search_song_by_name(Request $request, $search_prompt){
+    public function search_song_by_name(Request $request, $search_prompt){ //to-do maybe add a feature, where you can search songs by giving an artists name prompt
 
         $results = Songs_Model::where('Song_Name', 'like', "%$search_prompt%")->get();
     
@@ -146,7 +147,6 @@ class Songs_Controller extends Controller
     public function index_test(){
 
         return view('UI.index_test');
-
     }
 
 }

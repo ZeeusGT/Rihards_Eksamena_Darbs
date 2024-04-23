@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class Mail_Controller extends Controller
 {
     function sendMail(Request $request) {
+        
         $user = Users_Model::where('email', $request->input('email'))->first();
     
         if ($user) {
@@ -59,6 +60,7 @@ class Mail_Controller extends Controller
     }
 
     function redirectUser($request){
+
         $user = $request->session()->get('users_data');
         return view('mail.ChangePassword', ['user' => $user]);
     }
@@ -80,6 +82,5 @@ class Mail_Controller extends Controller
         $request->session()->forget('users_data');
 
         return redirect()->route('songs.login')->with('success', 'User Updated successfully!');
-
     }
 }

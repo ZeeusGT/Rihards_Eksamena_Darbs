@@ -51,6 +51,8 @@ function PlayWelcomeAnimation(bool, list_of_liked_songs) {
   var songs2 = document.querySelector('.Songs2');
   var playlists = document.querySelector('.Playlists');
   var pageTitles = document.querySelector('.Page_Titles');
+  var searchBtn = document.querySelector('.btn-search');
+  var searchBtnIcon = document.querySelector('.input-search');
 
   if (playAnimation !== 1) {
     welcomeMessage.classList.add('stopAnimation');
@@ -64,7 +66,7 @@ function PlayWelcomeAnimation(bool, list_of_liked_songs) {
     welcomeMessage.style.zIndex = '';
   }
 
-  var elementsToChange = document.querySelectorAll('.Page_Titles, .Playlists, .Songs, .Songs2, .SideBar');
+  var elementsToChange = document.querySelectorAll('.btn-search, .input-search, .Page_Titles, .Playlists, .Songs, .Songs2, .SideBar');
 
   elementsToChange.forEach(function(element) {
     if (playAnimation !== 1) {
@@ -155,5 +157,11 @@ function likeBeforeRedirect(targetUrl) {
     .catch(error => {
         console.error('Error:', error);
     });
+
+}
+
+function search(){
+
+  console.log("Searching!")
 
 }

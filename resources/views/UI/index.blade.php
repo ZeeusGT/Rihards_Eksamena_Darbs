@@ -86,9 +86,9 @@
 <div class="Titles_Container">
     <p class="Page_Titles">Explore Songs</p>
     <div class="search-box">
-    <button class="btn-search"><i class="fas fa-search"></i></button>
-    <input onkeydown="handleKeyPress(event, 'song')" type="text" id="search_inp" class="input-search" placeholder="Songs Name:">
-  </div>
+        <button class="btn-search"><i onclick="search('song')" class="fas fa-search"></i></button>
+        <input onkeydown="handleKeyPress(event, 'song')" type="text" id="search_inp" class="input-search" placeholder="Songs Name:">
+    </div>
 </div>
 <div class="Container_Values">
 @php
@@ -177,9 +177,9 @@
 <div class="Titles_Container">
     <p class="Page_Titles">Playlists Made By Other Users</p>
     <div class="search-box">
-    <button class="btn-search"><i class="fas fa-search"></i></button>
-    <input onkeydown="handleKeyPress(event, 'playlist')" type="text" id="search_inp2" class="input-search" placeholder="Playlists Name:">
-  </div>
+        <button class="btn-search"><i onclick="search('playlist')" class="fas fa-search"></i></button>
+        <input onkeydown="handleKeyPress(event, 'playlist')" type="text" id="search_inp2" class="input-search" placeholder="Songs Name:">
+    </div>
 </div>
 <div class="Container_Values">
 @foreach ($randomPlaylist as $playlist)
@@ -291,7 +291,7 @@
 <script>
 
 window.onload = function() {
-        PlayWelcomeAnimation(<?php echo $PlayAnimation; ?>, <?php echo json_encode(Auth::user()->Liked_Songs); ?>);
+    PlayWelcomeAnimation(<?php echo $PlayAnimation; ?>, <?php echo json_encode(Auth::user()->Liked_Songs); ?>);
 };
 
 const playlistCreate = document.getElementById('PlaylistCreatePos');
@@ -308,21 +308,26 @@ playlistCreate.addEventListener('mouseleave', () => {
 function handleKeyPress(event, search_type) {
 
     if (event.key === 'Enter') {
-    if(search_type == 'song'){
+        search(search_type)
 
+    }
+
+}
+
+function search(type){
+
+    if(type == "song"){
         var searchInputValue = document.getElementById("search_inp").value;
         var routeUrl = "{{ route('songs.search', ['search_prompt' => ':searchInputValue']) }}";
         routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
         likeBeforeRedirect(routeUrl);
 
-    }else if(search_type == 'playlist'){
-
+    }else if(type == 'playlist'){
         var searchInputValue = document.getElementById("search_inp2").value;
         var routeUrl = "{{ route('songs.playlist_search', ['search_prompt' => ':searchInputValue']) }}";
         routeUrl = routeUrl.replace(':searchInputValue', searchInputValue);
         likeBeforeRedirect(routeUrl);
 
-        }
     }
 
 }

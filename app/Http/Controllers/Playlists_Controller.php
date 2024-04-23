@@ -13,6 +13,7 @@ class Playlists_Controller extends Controller
 {
 
         public function index(){
+
             $songs = Songs_Model::all();
             $userId = Auth::id();
 
@@ -60,6 +61,7 @@ class Playlists_Controller extends Controller
         }
 
         public function listen_to_liked_songs(Playlist_Model $playlist){
+
             $user = Auth::user();
         
             $likedSongs = $user->Liked_Songs;
@@ -122,7 +124,6 @@ class Playlists_Controller extends Controller
                 return redirect()->route('songs.index')->with('error', "You do not have access to this page!");
     
             }
-
         }
     
         public function store_songs(Request $request){
@@ -147,7 +148,6 @@ class Playlists_Controller extends Controller
             Storage::disk('public')->put('Songs/'.$Songs_Directory, $Song_File);
             
             return redirect(route('songs.index'));
-
         }
 
         public function delete_playlist_by_id($id){

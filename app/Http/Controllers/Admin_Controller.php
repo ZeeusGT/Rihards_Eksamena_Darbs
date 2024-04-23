@@ -42,7 +42,6 @@ class Admin_Controller extends Controller
             return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
 
         }
-
     }
 
     public function login($id){
@@ -64,7 +63,6 @@ class Admin_Controller extends Controller
             return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
 
         }
-
     }
 
     public function delete_user_by_id($id){
@@ -81,6 +79,5 @@ class Admin_Controller extends Controller
             return redirect()->route('songs.index')->with('error', "Account id and yours didn't match!");
 
         }
-
     }
 }
