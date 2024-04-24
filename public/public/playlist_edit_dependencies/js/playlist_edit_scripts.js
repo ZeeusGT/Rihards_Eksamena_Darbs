@@ -1,8 +1,10 @@
-
 var string;
 let array;
 let globalVolume = 1;
 let ListOfLikedSongs;
+let oldAudio;
+let audio;
+
 
 function onload_required(list_of_liked_songs, song_id_list){ //runs all the neccessary functions / sets the needed variables for other functions to run properly
 
@@ -60,7 +62,7 @@ function add(songId, songsName, songsArtsit, songsGenre, songsPath) {
     c2.innerText = songsArtsit
     c3.innerText = songsGenre
     c4.innerHTML = `<div class="Action_Container">
-                        <div class="PlayButton" onclick="Play(${songId}, this)">
+                        <div id="AddedPlayButtonWithId${songId}" class="PlayButton" onclick="Play(${songId}, this)">
                             <div class="bottom"></div>
                             <div class="icon">
                                 <div class="left_side"></div>
@@ -163,7 +165,7 @@ function ListOfSongs() {
         c3.innerText = array_Song_Genre[i];
         c4.innerHTML = `<div class="Action_Container">
                             <audio preload="none"><source src="/public/Songs_Folder/${array_File_Path[i]}" type="audio/mpeg"></audio>
-                            <div class="PlayButton" onclick="Play(${array_Song_Id[i]}, this)">
+                            <div id="AddedPlayButtonWithId${array_Song_Id[i]}" class="PlayButton" onclick="Play(${array_Song_Id[i]}, this)">
                                 <div class="bottom"></div>
                                 <div class="icon">
                                     <div class="left_side"></div>
@@ -211,18 +213,38 @@ function updateTableClasses() {
 
 function Play(id, current) {
 
-    var audio = document.getElementById(`Song${id}`);
+    audio = document.getElementById(`Song${id}`);
+  
+    if (oldAudio != audio && oldAudio != null){
+      oldAudio.pause();
+      oldAudio.currentTime = 0;
+      oldAudio_id = parseInt(oldAudio.id.match(/\d+$/)[0]); //extracts the old audios (Song{{id}} id value, to properly animate previous buttons stopping/pausing)
+      document.getElementById(`PlayButtonWithId${oldAudio_id}`).classList.remove('active');
+      if(document.getElementById(`AddedPlayButtonWithId${id}`) != null){
 
-    if (current.className === "PlayButton active") {
-    current.classList.remove('active');
-    audio.pause();
-    } else {
-    current.classList.toggle('active');
-    audio.volume = globalVolume;
-    audio.play();
+        document.getElementById(`AddedPlayButtonWithId${oldAudio_id}`).classList.remove('active');
+
+      }
     }
-
-}
+  
+    if (current.className === "PlayButton active") {
+      current.classList.remove('active');
+      audio.pause();
+    } else {
+      current.classList.toggle('active');
+      audio.volume = globalVolume;
+      audio.play();
+    }
+  
+    audio.addEventListener('ended', function() {
+      current.classList.remove('active');
+      audio.currentTime = 0;
+      audio.pause();
+    });
+  
+    oldAudio = audio;
+  
+  }
 
 function changeGlobalVolume2(){
 

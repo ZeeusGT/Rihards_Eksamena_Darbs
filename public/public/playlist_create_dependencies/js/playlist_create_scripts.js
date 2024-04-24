@@ -1,6 +1,8 @@
 const List_Of_Song_Ids = [];
 let globalVolume = 1;
 let ListOfLikedSongs;
+let oldAudio;
+let audio;
 
 function VolumeSliderAppear() {
 
@@ -57,7 +59,7 @@ function Add(songId, songsName, songsArtsit, songsGenre, songsPath) {
     c2.innerText = songsArtsit
     c3.innerText = songsGenre
     c4.innerHTML = `<div class="Action_Container">
-                        <div class="PlayButton" onclick="Play(${songId}, this)">
+                        <div id="AddedPlayButtonWithId${songId}" class="PlayButton" onclick="Play(${songId}, this)">
                             <div class="bottom"></div>
                             <div class="icon">
                                 <div class="left_side"></div>
@@ -182,18 +184,38 @@ function Error(message){
 
 function Play(id, current) {
 
-    var audio = document.getElementById(`Song${id}`);
+    audio = document.getElementById(`Song${id}`);
+  
+    if (oldAudio != audio && oldAudio != null){
+      oldAudio.pause();
+      oldAudio.currentTime = 0;
+      oldAudio_id = parseInt(oldAudio.id.match(/\d+$/)[0]); //extracts the old audios (Song{{id}} id value, to properly animate previous buttons stopping/pausing)
+      document.getElementById(`PlayButtonWithId${oldAudio_id}`).classList.remove('active');
+      if(document.getElementById(`AddedPlayButtonWithId${id}`) != null){
 
-    if (current.className === "PlayButton active") {
-    current.classList.remove('active');
-    audio.pause();
-    } else {
-    current.classList.toggle('active');
-    audio.volume = globalVolume;
-    audio.play();
+        document.getElementById(`AddedPlayButtonWithId${oldAudio_id}`).classList.remove('active');
+
+      }
     }
-
-}
+  
+    if (current.className === "PlayButton active") {
+      current.classList.remove('active');
+      audio.pause();
+    } else {
+      current.classList.toggle('active');
+      audio.volume = globalVolume;
+      audio.play();
+    }
+  
+    audio.addEventListener('ended', function() {
+      current.classList.remove('active');
+      audio.currentTime = 0;
+      audio.pause();
+    });
+  
+    oldAudio = audio;
+  
+  }
 
 function likeBeforeRedirect(targetUrl) {
 
