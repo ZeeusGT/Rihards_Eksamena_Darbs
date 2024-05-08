@@ -256,3 +256,8 @@ svg {
 .inputfield_container{
     position: relative;
 }
+
+#song_error_pos{
+    position: relative;
+    top: 80px;
+}

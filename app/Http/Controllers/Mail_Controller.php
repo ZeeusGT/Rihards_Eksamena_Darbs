@@ -32,7 +32,9 @@ class Mail_Controller extends Controller
 
         }else {
 
-            return response()->json(['message' => 'Email does not exist']);
+            return view('UI.userLogin')->withErrors([
+                'errors' => "Provided Email Doesn't Exsist",
+            ]);
             
         }
     }
@@ -55,7 +57,9 @@ class Mail_Controller extends Controller
             return $this->redirectUser($request);
     
         } else {
-            return response()->json(['message' => 'Code is incorrect']);
+            return view('UI.userLogin')->withErrors([
+                'errors' => 'Provided Code Is Incorrect',
+            ]);
         }
     }
 

@@ -56,7 +56,7 @@
                 <input type='text' onchange="removeSpan('Song_Name')" id="Song_Name" name="Song_Name" autocomplete="off"/>
                 <span id="Songs_Name_Span">Songs Name</span>
                 @error('Song_Name')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                    <div>{{ $message }}</div>
                 @enderror
             </div>
 
@@ -64,7 +64,7 @@
                 <input type='text' onchange="removeSpan('Artists_Name')" id="Artists_Name" name="Artists_Name"/>
                 <span id="Artists_Name_Span" >Artists Name</span>
                 @error('Artists_Name')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                    <div>{{ $message }}</div>
                 @enderror
             </div>
 
@@ -72,7 +72,7 @@
                 <input type='text' onchange="removeSpan('Songs_Genre')" id="Songs_Genre" name="Songs_Genre"/>
                 <span id="Songs_Genre_Span">Songs Genre</span>
                 @error('Songs_Genre')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                    <div>{{ $message }}</div>
                 @enderror
             </div>
 
@@ -80,7 +80,7 @@
                 <input type='file' onchange="UploadSong()" id="file" name="Song" accept="audio/*"/>
                 <label id="filesLabel" onmouseenter="changeIcon()" onmouseleave="changeBack()" for="file">Upload File</label>
                 @error('Song')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                    <div id="song_error_pos">{{ $message }}</div>
                 @enderror
             </div>
         </div>

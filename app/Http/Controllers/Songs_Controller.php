@@ -69,8 +69,8 @@ class Songs_Controller extends Controller
 
         $validatedData = $request->validate([
             'Song_Name' => 'required|max:25',
-            'Artists_Name' => 'required',
-            'Songs_Genre' => 'required',
+            'Artists_Name' => 'required|max:15',
+            'Songs_Genre' => 'required|max:15',
             'Song' => 'required'
         ]);
 
@@ -104,9 +104,9 @@ class Songs_Controller extends Controller
         if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
         
         $request->validate([
-            'Song_Name' => 'required',
-            'Artists_Name' => 'required',
-            'Songs_Genre' => 'required',
+            'Song_Name' => 'required|max:25',
+            'Artists_Name' => 'required|max:15',
+            'Songs_Genre' => 'required|max:15',
         ]);
 
         $song->update([
