@@ -28,8 +28,8 @@ return new class extends Migration
                 'Owners_ID' => 1,
             ],
             [
-                'Song_Name' => 'Psycho Dreams', 'Artists_Name' => 'Kill Eva, ENCASSATOR',
-                'Songs_Genre' => 'Russian Indie', 'Files_Name' => '2.mp3',
+                'Song_Name' => ' Magnolia', 'Artists_Name' => 'Playboi Carti',
+                'Songs_Genre' => 'Hip Hop / Rap', 'Files_Name' => '2.mp3',
                 'Owners_ID' => 1,
             ],
             [
@@ -53,7 +53,7 @@ return new class extends Migration
                 'Owners_ID' => 1,
             ],
             [
-                'Song_Name' => 'Again', 'Artists_Name' => 'Noah Cyrus, X',
+                'Song_Name' => 'Intelligency', 'Artists_Name' => 'August',
                 'Songs_Genre' => 'Electronic', 'Files_Name' => '7.mp3',
                 'Owners_ID' => 1,
             ],
