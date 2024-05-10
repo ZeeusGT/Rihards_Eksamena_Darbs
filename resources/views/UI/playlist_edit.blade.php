@@ -78,7 +78,7 @@
                         <td>
                         <div class="Action_Container">
                         <audio class="AudioClass" id="Song{{$song->id}}" src="/public/Songs_Folder/{{ $song->Files_Name }}" preload="none"></audio>
-                        <div class="PlayButton" onclick="Play({{$song->id}}, this)">
+                        <div id="PlayButtonWithId{{$song->id}}" class="PlayButton" onclick="Play({{$song->id}}, this)">
                                 <div class="bottom"></div>
                                 <div class="icon">
                                     <div class="left_side"></div>

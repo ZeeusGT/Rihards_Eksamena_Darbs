@@ -49,5 +49,4 @@ Route::post('/send-mail', [Mail_Controller::class, 'sendMail'])->name('mail');
 Route::post('/validate-mail', [Mail_Controller::class, 'validateCode'])->name('mail.validate');
 Route::get('/update-mail', [Mail_Controller::class, 'redirectUser'])->name('mail.redirect_user');
 Route::put('/update-mail', [Mail_Controller::class, 'updatePassword'])->name('mail.update');
-
-Route::get('/songs_test', [Songs_Controller::class, 'index_test'])->name('songs.index_test');
+Route::post('/send-support-mail', [Mail_Controller::class, 'send_support_message'])->name('mail.support')->middleware('auth');

@@ -32,7 +32,9 @@ class Mail_Controller extends Controller
 
         }else {
 
-            return response()->json(['message' => 'Email does not exist']);
+            return view('UI.userLogin')->withErrors([
+                'errors' => "Provided Email Doesn't Exsist",
+            ]);
             
         }
     }
@@ -55,7 +57,9 @@ class Mail_Controller extends Controller
             return $this->redirectUser($request);
     
         } else {
-            return response()->json(['message' => 'Code is incorrect']);
+            return view('UI.userLogin')->withErrors([
+                'errors' => 'Provided Code Is Incorrect',
+            ]);
         }
     }
 
@@ -82,5 +86,18 @@ class Mail_Controller extends Controller
         $request->session()->forget('users_data');
 
         return redirect()->route('songs.login')->with('success', 'User Updated successfully!');
+    }
+
+    function send_support_message(Request $request){
+
+        $mailData = [
+            'title' => 'Message From ' . $request->input('name'),
+            'body' => "Send response back to: " . $request->input('email') . ". Message states: " . $request->input('text')
+        ];        
+
+        Mail::to("rihifymail@gmail.com")->send(new SignUp($mailData));
+
+        return redirect()->route('songs.index');
+
     }
 }

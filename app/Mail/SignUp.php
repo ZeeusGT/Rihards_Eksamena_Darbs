@@ -30,7 +30,7 @@ class SignUp extends Mailable
         $title = $this->mailData['title'];
         $body = $this->mailData['body'];
 
-        return $this->subject('Password Reset Code')
+        return $this->subject('Rihify Help')
                     ->html("<body>
                                 <h1>$title</h1>
                                 <p>Hello</p>

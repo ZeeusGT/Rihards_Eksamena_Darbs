@@ -147,8 +147,10 @@ function Play(id) {
     }
 
     audio.addEventListener('ended', function() {
+            audio_id = parseInt(audio.id.match(/\d+$/)[0]);
+            document.getElementById(`PlayButtonWithId${audio_id}`).classList.remove('active');
+            document.getElementById("AudioControlsPlayButton").classList.remove('active');
             CurrentlyPlayling = false;
-            current.classList.remove('active');
             audio.pause();
             document.getElementById("CurrentDuration").innerHTML = "0:00";
         });

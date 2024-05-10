@@ -219,20 +219,41 @@ function PlayCurrentSong() {
 
 function PreviousSong(){
 
-    for(let i = 0; i < IdsArray.length; i++){
-        if(IdsArray[i] == audio.id.replace('Song', '')){
-            document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
-            audio.currentTime = 0;
-            audio.pause();
-            if (IdsArray[i - 1] == null){
-                document.getElementById("PlayButtonWithId" + IdsArray[IdsArray.length -1]).classList.remove('active');
-                Play(IdsArray[IdsArray.length -1])
-            }else{
-                document.getElementById("PlayButtonWithId" + IdsArray[i - 1]).classList.remove('active');
-                Play(IdsArray[i - 1]); 
+    if(ShuffleToggle == true){
+
+        for(let i = 0; i < ShuffleIds.length; i++){
+            if(ShuffleIds[i] == audio.id.replace('Song', '')){
+                document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
+                audio.currentTime = 0;
+                audio.pause();
+                if (ShuffleIds[i - 1] == null){
+                    Play(ShuffleIds[ShuffleIds.length -1])
+                }else{
+                    document.getElementById("PlayButtonWithId" + ShuffleIds[i - 1]).classList.remove('active');
+                    Play(ShuffleIds[i - 1]); 
+                }
+                break;
             }
-            break;
         }
+
+    }else{
+
+        for(let i = 0; i < IdsArray.length; i++){
+            if(IdsArray[i] == audio.id.replace('Song', '')){
+                document.getElementById("PlayButtonWithId" + audio.id.replace('Song', '')).classList.remove('active');
+                audio.currentTime = 0;
+                audio.pause();
+                if (IdsArray[i - 1] == null){
+                    document.getElementById("PlayButtonWithId" + IdsArray[IdsArray.length -1]).classList.remove('active');
+                    Play(IdsArray[0])
+                }else{
+                    document.getElementById("PlayButtonWithId" + IdsArray[i - 1]).classList.remove('active');
+                    Play(IdsArray[i - 1]); 
+                }
+                break;
+            }
+        }
+
     }
 
 }
@@ -267,6 +288,8 @@ function NextSong(){
                     document.getElementById("PlayButtonWithId" + IdsArray[0]).classList.remove('active');
                     Play(IdsArray[0])
                 }else{
+                    console.log("I value: " + i)
+                    console.log("IdsArray len" + IdsArray.length)
                     document.getElementById("PlayButtonWithId" + IdsArray[i + 1]).classList.remove('active');
                     Play(IdsArray[i + 1]); 
                 }
