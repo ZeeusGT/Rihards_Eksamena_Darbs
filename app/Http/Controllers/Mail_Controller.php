@@ -87,4 +87,17 @@ class Mail_Controller extends Controller
 
         return redirect()->route('songs.login')->with('success', 'User Updated successfully!');
     }
+
+    function send_support_message(Request $request){
+
+        $mailData = [
+            'title' => 'Message From ' . $request->input('name'),
+            'body' => "Send response back to: " . $request->input('email') . ". Message states: " . $request->input('text')
+        ];        
+
+        Mail::to("rihifymail@gmail.com")->send(new SignUp($mailData));
+
+        return redirect()->route('songs.index');
+
+    }
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/public/create_dependencies/styles/create_styles.css">
     <script src="/public/create_dependencies/js/create_scripts.js"></script>
@@ -53,7 +54,7 @@
             @method('POST')
         <div class="inputfield_container">
             <div class="inputBox">
-                <input type='text' onchange="removeSpan('Song_Name')" id="Song_Name" name="Song_Name" autocomplete="off"/>
+                <input type='text' onchange="removeSpan('Song_Name')" id="Song_Name" name="Song_Name" value="{{ old('Song_Name') }}" autocomplete="off"/>
                 <span id="Songs_Name_Span">Songs Name</span>
                 @error('Song_Name')
                     <div>{{ $message }}</div>
@@ -61,7 +62,7 @@
             </div>
 
             <div class="inputBox">
-                <input type='text' onchange="removeSpan('Artists_Name')" id="Artists_Name" name="Artists_Name"/>
+                <input type='text' onchange="removeSpan('Artists_Name')" id="Artists_Name" value="{{ old('Artists_Name') }}" name="Artists_Name"/>
                 <span id="Artists_Name_Span" >Artists Name</span>
                 @error('Artists_Name')
                     <div>{{ $message }}</div>
@@ -69,7 +70,7 @@
             </div>
 
             <div class="inputBox">
-                <input type='text' onchange="removeSpan('Songs_Genre')" id="Songs_Genre" name="Songs_Genre"/>
+                <input type='text' onchange="removeSpan('Songs_Genre')" id="Songs_Genre" value="{{ old('Songs_Genre') }}" name="Songs_Genre"/>
                 <span id="Songs_Genre_Span">Songs Genre</span>
                 @error('Songs_Genre')
                     <div>{{ $message }}</div>
@@ -106,12 +107,47 @@
 </div>
 <script>
 
+removeSpan("Song_Name"); //These will run when page loads, so that if the user doesn't meet the validation requirements and gets redirected back here I want to keep the animation frozen, since there will be old values inserted here
+removeSpan("Artists_Name");
+removeSpan("Songs_Genre");
+
 document.getElementById("file").addEventListener("click", function (event) {
     if(alreadyUploaded == true){
     event.preventDefault();
     UploadSong()
     }
 });
+
+function removeSpan(id) {
+    const inputElement = document.getElementById("Song_Name");
+    const spanElement = document.getElementById("Songs_Name_Span");
+
+    const inputElement2 = document.getElementById("Artists_Name");
+    const spanElement2 = document.getElementById("Artists_Name_Span");
+
+    const inputElement3 = document.getElementById("Songs_Genre");
+    const spanElement3 = document.getElementById("Songs_Genre_Span");
+
+    if (id === "Song_Name") {
+        if (inputElement.value !== "") {
+            inputElement.classList.add("focused");
+        } else {
+            inputElement.classList.remove("focused");
+        }
+    }else if(id === "Artists_Name"){
+        if (inputElement2.value !== "") {
+            inputElement2.classList.add("focused");
+        } else {
+            inputElement2.classList.remove("focused");
+        }
+    }else if(id === "Songs_Genre"){
+        if (inputElement3.value !== "") {
+            inputElement3.classList.add("focused");
+        } else {
+            inputElement3.classList.remove("focused");
+        }
+    }
+}
 
 </script>
 </body>

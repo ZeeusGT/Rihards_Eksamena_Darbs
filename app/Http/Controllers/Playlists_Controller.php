@@ -25,8 +25,6 @@ class Playlists_Controller extends Controller
 
         public function store_playlist(Request $request){
 
-            $user = Auth::user();
-
             $validatedData = $request->validate([
                 'Playlists_Name' => 'required',
                 'ListOfSongs' => 'required'
@@ -34,7 +32,7 @@ class Playlists_Controller extends Controller
         
             $playlist = new Playlist_Model();
             $playlist->name = $validatedData['Playlists_Name'];
-            $playlist->playlists_owner = $user->username;
+            $playlist->playlists_owner = Auth::user()->username;
             $playlist->song_id_list = $request->input('ListOfSongs');
             $playlist->Owners_ID = Auth::id();
         

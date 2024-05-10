@@ -79,9 +79,9 @@ class Authentication_Controller extends Controller
 
     public function update_selected_user(Users_Model $user, Request $request){
 
-        $isArtist = $request->has('isArtist') ? true : false;
-
         if(Auth::id() == $user->id || Auth::user()->isAdmin){
+
+            $isArtist = $request->has('isArtist') ? true : false;
 
             if($request->input('username') == $user->username && $request->input('email') != $user->email){
                 $validatedData = $request->validate([
@@ -90,7 +90,6 @@ class Authentication_Controller extends Controller
 
                 $user->update([
                     'email' => $validatedData['email'],
-                    'isArtist' => $isArtist
                 ]);
 
             }else if($request->input('username') != $user->username && $request->input('email') == $user->email){
@@ -100,7 +99,6 @@ class Authentication_Controller extends Controller
 
                 $user->update([
                     'username' => $validatedData['username'],
-                    'isArtist' => $isArtist
                 ]);
             }else if($request->input('username') != $user->username && $request->input('email') != $user->email){
 
@@ -112,7 +110,6 @@ class Authentication_Controller extends Controller
                 $user->update([
                     'username' => $validatedData['username'],
                     'email' => $validatedData['email'],
-                    'isArtist' => $isArtist
                 ]);
 
             }

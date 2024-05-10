@@ -52,10 +52,14 @@ class Songs_Controller extends Controller
 
         if(Auth::id() == $song->Owners_ID || Auth::user()->isAdmin){
 
-        if (file_exists('public/Songs_Folder/' . $song->id . '.mp3')) {
-            unlink('public/Songs_Folder/' . $song->id . '.mp3');
+        if (file_exists('public/Songs_Folder/' . $song->Files_Name)) {
+            unlink('public/Songs_Folder/' . $song->Files_Name);
         }
         $song->delete();
+
+        $user = Auth::user();
+        $user->songs_uploaded = $user->songs_uploaded - 1;
+        $user->save();
         
         return redirect(route('songs.index'));
         }else{
@@ -67,35 +71,49 @@ class Songs_Controller extends Controller
     
     public function store_songs(Request $request) {
 
-        $validatedData = $request->validate([
-            'Song_Name' => 'required|max:25',
-            'Artists_Name' => 'required|max:15',
-            'Songs_Genre' => 'required|max:15',
-            'Song' => 'required'
-        ]);
+        if(Auth::user()->songs_uploaded >= Auth::user()->upload_limit){
 
-        $latestSong = Songs_Model::latest()->first();
+            return redirect()->route('songs.index')->with('error', "You've reached your upload limit!");
 
-        if($latestSong == null){
-            $songId = 1;
         }else{
-            $songId = $latestSong->id + 1;
+
+
+
+            $validatedData = $request->validate([
+                'Song_Name' => 'required|max:25',
+                'Artists_Name' => 'required|max:15',
+                'Songs_Genre' => 'required|max:15',
+                'Song' => 'required'
+            ]);
+
+            $latestId = Songs_Model::max('id');
+            $latestSong = Songs_Model::find($latestId);
+
+            if($latestSong == null){
+                $songId = 1;
+            }else{
+                $songId = $latestSong->id + 1;
+            }
+        
+            $song = new Songs_Model();
+            $song->Song_Name = $validatedData['Song_Name'];
+            $song->Artists_Name = $validatedData['Artists_Name'];
+            $song->Songs_Genre = $validatedData['Songs_Genre'];
+            $song->Owners_ID = Auth::id();
+        
+            $file = $request->file('Song');
+            $fileName = $songId . '.mp3';
+            $file->move('public/Songs_Folder', $fileName);
+        
+            $song->Files_Name = $fileName;
+            $song->save();
+
+            $user = Auth::user();
+            $user->songs_uploaded = $user->songs_uploaded + 1;
+            $user->save();
+        
+            return redirect()->route('songs.index');
         }
-    
-        $song = new Songs_Model();
-        $song->Song_Name = $validatedData['Song_Name'];
-        $song->Artists_Name = $validatedData['Artists_Name'];
-        $song->Songs_Genre = $validatedData['Songs_Genre'];
-        $song->Owners_ID = Auth::id();
-    
-        $file = $request->file('Song');
-        $fileName = $songId . '.mp3';
-        $file->move('public/Songs_Folder', $fileName);
-    
-        $song->Files_Name = $fileName;
-        $song->save();
-    
-        return redirect()->route('songs.index');
     }
     
 
@@ -142,11 +160,6 @@ class Songs_Controller extends Controller
         $results = Songs_Model::where('Song_Name', 'like', "%$search_prompt%")->get();
     
         return view('UI.list_of_songs', ['results' => $results, 'search_prompt' => $search_prompt]);
-    }
-
-    public function index_test(){
-
-        return view('UI.index_test');
     }
 
 }
