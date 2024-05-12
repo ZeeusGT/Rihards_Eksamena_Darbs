@@ -33,12 +33,13 @@ MAIL_MAILER=smtp
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=587
 MAIL_USERNAME=RihifyMail@gmail.com
-MAIL_PASSWORD="twko nbfk xnmf tkod"
+MAIL_PASSWORD="{{parole}}"
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="RihifyMail@gmail.com"
 MAIL_FROM_NAME="RihifyHelp"
 
-" --Šis ir mans epasts, ko izveidoju ši projekta ietvaros.
+" --Šis ir mans epasts, ko izveidoju ši projekta ietvaros, parole nosūtīta Ilmāram Brensonam.
+
 10. Solis atvērt termināli un palaist šo komandu: php artisan migrate --Šis izveidos datubāzes tabulas un ierakstus.
 11. Solis termināli ieraksti šo komandu: php artisan ser --Startēs web serveri
 12. Solis ieraksti norādīto adresi internetpārlūkā, terminālī atrodās adrese: Server running on [{{adrese}}]. adreses piemērs: "http://127.0.0.1:8000" 
