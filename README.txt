@@ -41,5 +41,5 @@ MAIL_FROM_NAME="RihifyHelp"
 " --Šis ir mans epasts, ko izveidoju ši projekta ietvaros.
 10. Solis atvērt termināli un palaist šo komandu: php artisan migrate --Šis izveidos datubāzes tabulas un ierakstus.
 11. Solis termināli ieraksti šo komandu: php artisan ser --Startēs web serveri
-12. Solis ieraksti adresi, kas atrodās terminālī: Server running on [{{adrese}}]. adreses piemērs: "http://127.0.0.1:8000" 
+12. Solis ieraksti norādīto adresi internetpārlūkā, terminālī atrodās adrese: Server running on [{{adrese}}]. adreses piemērs: "http://127.0.0.1:8000" 
 
