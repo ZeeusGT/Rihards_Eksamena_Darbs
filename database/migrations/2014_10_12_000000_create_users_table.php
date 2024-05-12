@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('isAdmin')->default(false);
             $table->json('Liked_Songs')->default(json_encode([]));
             $table->integer('upload_limit')->default(10);
-            $table->integer('songs_uploaded');
+            $table->integer('songs_uploaded')->default(0);
             $table->timestamps();
         });
 
