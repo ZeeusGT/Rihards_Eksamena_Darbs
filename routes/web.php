@@ -31,6 +31,7 @@ Route::get('songs/playlist/liked_songs', [Playlists_Controller::class, 'listen_t
 Route::get('songs/playlist/search/{search_prompt}', [Playlists_Controller::class, 'search_playlist_by_name'])->name('songs.playlist_search')->middleware('auth');
 
 Route::get('/songs/login', [Authentication_Controller::class, 'index'])->name('songs.login');
+Route::get('/login', [Authentication_Controller::class, 'index'])->name('login'); //meant for middleware('auth'); Basically it will redirect the user to this route if hes not logged in but tries to access routes, that require this auth
 Route::get('/songs/password_reset', [Authentication_Controller::class, 'passwordReset'])->name('songs.reset');
 Route::get('/songs/register', [Authentication_Controller::class, 'register_redirect'])->name('songs.register');
 Route::post('/songs/createUser', [Authentication_Controller::class, 'register'])->name('songs.createUser');
