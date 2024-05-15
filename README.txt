@@ -1,8 +1,12 @@
 Šeit aprakstīšu vajadzīgos soļus, lai veiksmīgi startētu manējo projektu.
 
 Vajadzīgo aplikāciju saraksts:
-Xampp
+Xampp (PHP versija 8.2 un uz augšu)
 MySQL Workbench
+Jābūt instalētam:
+Composer: https://getcomposer.org/download//
+7z: https://www.7-zip.org/download.html
+Git: https://git-scm.com/downloads 
 
 1. Solis: Atvērt Xampp;
 2. Solis: Startēt MySQL serveri un iegaumēt Port(s) sadaļu;
